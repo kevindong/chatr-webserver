@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>List User's Modules</title>
+	</head>
+	<body>
+		<ul id="module-list"></ul>
+	</body>
+	<script>
+		var request = new XMLHttpRequest();
+		request.open('GET', 'https://SERVER.URL/HERE/modules/USER/list', true);
+
+		request.onload = function () {
+			var modules = JSON.parse(request.responseText);
+			var ul = document.getElementById('module-list');
+			for (var i = 0; i < modules.length; i++) {
+				var li = document.createElement('li');
+				li.innerHTML = modules[i];
+				ul.appendChild(li);
+			}
+		};
+
+		request.send();
+	</script>
+</html>
