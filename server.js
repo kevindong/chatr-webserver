@@ -25,6 +25,11 @@ const app = express();
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
+app.use('/static', express.static('public'));
+app.get('/', function (req, res) {  
+    res.render('index')
+});
+
 app.set('port', process.env.PORT || 3000);
 app.use("*", function (req, res, next) {
   if (process.env.NODE_ENV === 'production')
