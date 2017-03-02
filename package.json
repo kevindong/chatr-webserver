@@ -3,8 +3,7 @@
   "version": "0.0.1",
   "description": "The webserver for Chatr",
   "scripts": {
-    "build": "npm-run-all build:*",
-    
+    "build": "npm-run-all",
     "deploy": "npm test && git push heroku master",
     "postinstall": "npm run build",
     "start": "node server.js",
