@@ -1,5 +1,8 @@
 function uploadModule(req, res) {
-	res.render('site/upload_module', {});
+	res.render('upload_module', {
+		modules: ["hello", "world"],
+		serverUrl: ""
+	});
 }
 
 module.exports = {uploadModule};

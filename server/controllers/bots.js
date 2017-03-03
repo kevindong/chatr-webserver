@@ -1,22 +1,23 @@
+"use strict";
 const https = require('https');
 
 function addModuleToBot(req, res) {
-	let name = '', activeModules = [], allModules = [];
+	let name = 'Bot', activeModules = ["hello", "world"], allModules = ["how", "are", "you"];
 
-	getName(req.params.botId)
-		.then(n => name = n)
-		.then(getActiveModules(req.params.botId))
-		.then(m => activeModules = m)
-		.then(getAllModules(req.params.botId))
-		.then(m => allModules = m)
-		.then(
-			res.render('site/add_module_to_bot', {
+	// getName(req.params.botId)
+	// 	.then(n => name = n)
+	// 	.then(getActiveModules(req.params.botId))
+	// 	.then(m => activeModules = m)
+	// 	.then(getAllModules(req.params.botId))
+	// 	.then(m => allModules = m)
+	// 	.then(
+			res.render('add_module_to_bot', {
 				botName: name,
 				activeModules: activeModules,
 				allModules: allModules,
 				serverUrl: process.env.dev ? "" : ""
-			})
-		).catch(err => console.error(err));
+			});
+		// ).catch(err => console.error(err));
 }
 
 function getName(id) {
