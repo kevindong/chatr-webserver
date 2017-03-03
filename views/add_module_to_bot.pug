@@ -6,10 +6,6 @@ html(lang="en")
     body
         form(method="POST", action=serverUrl)
             h1=botName
-            h3 Current Active Modules:
-            ul
-                each bot in activeModules
-                    li=bot
             h3 Available Modules
             each bot in allModules
                 input(type="checkbox", value=bot, name=bot, id=bot)
