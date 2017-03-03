@@ -1,5 +1,6 @@
-const example = require('./example');
+const bots = require('./bots');
+const modules = require('./modules');
 
 module.exports = {
-	example,
+	bots, modules
 };

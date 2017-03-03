@@ -1,15 +1,6 @@
-const exampleController = require('../controllers').example;
+const controllers = require('../controllers');
 
-module.exports = (app) => {
-	// Example non-trivial code; delete at will
-	app.get('/route', (req, res) => {
-		res.status(200).send(
-			{
-				message: 'Welcome to the main routes file!',
-			}
-		);
-	});
-
-	// Proof that the three controllers work
-	app.get('/example/testGet', exampleController.testGet);
+module.exports = app => {
+	app.get('/bots/:botId/add-module', controllers.bots.addModuleToBot);
+	app.get('/modules/:userId/upload', controllers.modules.uploadModule);
 };
