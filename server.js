@@ -14,6 +14,7 @@ const passport = require('passport');
 dotenv.load();
 
 // Controllers
+const adminController = require('./controllers/admin');
 const HomeController = require('./controllers/home');
 const userController = require('./controllers/user');
 const contactController = require('./controllers/contact');
@@ -59,6 +60,8 @@ app.use(function(req, res, next) {
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', HomeController.index);
+app.get('/admin', adminController.index);
+app.post('/admin', adminController.index);
 app.get('/contact', contactController.contactGet);
 app.post('/contact', contactController.contactPost);
 app.get('/account', userController.ensureAuthenticated, userController.accountGet);
