@@ -1,5 +1,6 @@
 @import url(font-awesome.min.css);
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300italic,600italic,300,600");
+
 html,
 body,
 div {
@@ -54,11 +55,19 @@ h2 {
     letter-spacing: 0.5rem;
 }
 
+.align-right {
+    text-align: right;
+}
+
 .icon:before {
     font-family: FontAwesome;
     font-size: 40px;
     font-style: normal;
     font-weight: normal;
+}
+
+.spacer-xs {
+    margin: 8px;
 }
 
 

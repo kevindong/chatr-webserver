@@ -14,25 +14,18 @@ html(lang='en')
             p
                 | This is a list of modules that have been submitted by developers and are waiting for approval before being public
                 | on the marketplace.
-            .list-group
-                a.list-group-item(href='#')
+            - var jsonTest = [{"id":2,"name":"Test Module (Unapproved)","description":"Test Module (Unapproved)'s Description","userId":1,"code":"console.log(\"Hello, world! -Unapproved Code\");","codeIsApproved":false,"pendingCode":null,"pendingCodeIsApproved":false,"active":true,"createdAt":"2017-03-02T00:10:01.797Z","updatedAt":"2017-03-02T00:10:01.797Z"},{"id":3,"name":"Test Module (Approved)","description":"Test Module (Approved)'s Description","userId":1,"code":"console.log(\"Hello, world! -Approved Code\");","codeIsApproved":true,"pendingCode":null,"pendingCodeIsApproved":false,"active":true,"createdAt":"2017-03-02T00:11:07.161Z","updatedAt":"2017-03-02T00:11:07.161Z"}];
+            ul.list-group
+            each module in jsonTest
+                .list-group-item(href='#')
                     .row
                         .col-sm-9
-                            h4.list-group-item-heading Giphy
-                            p.list-group-item-text Giphy let's you choose a random gif related to a keyword.
+                            h4.list-group-item-heading #{module.name}
+                            p.list-group-item-text #{module.description}
                         .spacer-xs.visible-xs
                         .col-sm-3
                             .align-right
                                 button.btn.btn-success(type='button') Approve
                                 button.btn.btn-danger(type='button') Deny
-                a.list-group-item(href='#')
-                    .row
-                        .col-sm-9
-                            h4.list-group-item-heading Weather
-                            p.list-group-item-text Weather prints a brief overview of the days forcast.
-                        .spacer-xs.visible-xs
-                        .col-sm-3
-                            .align-right
-                                button.btn.btn-success(type='button') Approve
-                                button.btn.btn-danger(type='button') Deny
+        script(src="https://code.jquery.com/jquery-3.1.1.min.js", integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=", crossorigin="anonymous")
         script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js', integrity='sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa', crossorigin='anonymous')
