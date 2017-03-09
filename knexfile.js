@@ -1,9 +1,9 @@
-var dotenv = require('dotenv');
+const dotenv = require('dotenv');
 
 dotenv.load();
 
 module.exports = {
-  client: 'pg',
-  connection: process.env.DATABASE_URL,
-  ssl: true
+	client: 'pg',
+	connection: process.env.DATABASE_URL,
+	ssl: true,
 };
