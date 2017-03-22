@@ -55,10 +55,6 @@ h2 {
     letter-spacing: 0.5rem;
 }
 
-.align-right {
-    text-align: right;
-}
-
 .icon:before {
     font-family: FontAwesome;
     font-size: 40px;
