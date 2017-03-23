@@ -29,33 +29,35 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.use('/static', express.static('public'));
-app.get('/', function (req, res) {
-    res.render('index')
+app.get('/', (req, res) => {
+	res.render('index');
 });
 
 app.set('port', process.env.PORT || 3000);
-app.use("*", function (req, res, next) {
-  if (process.env.NODE_ENV === 'production')
-    if (req.headers['x-forwarded-proto'] != 'https')
-      return res.redirect('https://' + req.headers.host + req.url);
-    else
-      return next();
-  else
-    return next();
+app.use('*', (req, res, next) => {
+	if (process.env.NODE_ENV === 'production')		{
+		if (req.headers['x-forwarded-proto'] !== 'https') {
+		  return res.redirect(`https://${  req.headers.host  }${req.url}`);
+		} else {
+			return next();
+		}
+	} else {
+		return next();
+	}
 });
 app.use(compression());
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false, }));
 app.use(expressValidator());
 app.use(methodOverride('_method'));
-app.use(session({ secret: process.env.SESSION_SECRET, resave: true, saveUninitialized: true }));
+app.use(session({ secret: process.env.SESSION_SECRET, resave: true, saveUninitialized: true, }));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(function(req, res, next) {
-  res.locals.user = req.user ? req.user.toJSON() : null;
-  next();
+app.use((req, res, next) => {
+	res.locals.user = req.user ? req.user.toJSON() : null;
+	next();
 });
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -77,21 +79,21 @@ app.get('/reset/:token', userController.resetGet);
 app.post('/reset/:token', userController.resetPost);
 app.get('/logout', userController.logout);
 app.get('/unlink/:provider', userController.ensureAuthenticated, userController.unlink);
-app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'user_location'] }));
-app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/account', failureRedirect: '/login' }));
+app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'user_location', ], }));
+app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/account', failureRedirect: '/login', }));
 app.get('/bots/:botId/add-module', BotController.addModuleToBot);
 app.get('/modules/:userId/upload', ModulesController.uploadModule);
 
 // Production error handler
 if (app.get('env') === 'production') {
-  app.use(function(err, req, res, next) {
-    console.error(err.stack);
-    res.sendStatus(err.status || 500);
-  });
+	app.use((err, req, res, next) => {
+		console.error(err.stack);
+		res.sendStatus(err.status || 500);
+	});
 }
 
-app.listen(app.get('port'), function() {
-  console.log('Express server listening on port ' + app.get('port'));
+app.listen(app.get('port'), () => {
+	console.log(`Express server listening on port ${  app.get('port')}`);
 });
 
 module.exports = app;

@@ -1,12 +1,12 @@
 const https = require('https');
 
 function getModules(userId) {
-	return new Promise(function(resolve, reject) {
+	return new Promise((resolve, reject) => {
 		https.get(`https://chatr-apiserver-dev/modules/${userId}/list`, (res) => {
 			res.on('data', (d) => {
 				resolve(d);
 			});
-		}).on('error', (err) =>  {
+		}).on('error', (err) => {
 			reject(err);
 		});
 	});
@@ -19,4 +19,4 @@ function uploadModule(req, res) {
 	});
 }
 
-module.exports = { uploadModule, };
+module.exports = {uploadModule,};

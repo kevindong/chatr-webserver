@@ -1,6 +1,6 @@
-var config = require('../knexfile');
-var knex = require('knex')(config);
-var bookshelf = require('bookshelf')(knex);
+const config = require('../knexfile');
+const knex = require('knex')(config);
+const bookshelf = require('bookshelf')(knex);
 
 bookshelf.plugin('virtuals');
 bookshelf.plugin('visibility');
