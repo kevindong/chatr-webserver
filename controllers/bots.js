@@ -3,7 +3,7 @@ const https = require('https');
 
 function getName(id) {
 	return new Promise((resolve, reject) => {
-		https.get(`https://SERVER.URL/modules/${id}`, (res) => {
+		https.get(`${process.env.SERVER_URL}/modules/${id}`, (res) => {
 			res.on('data', (d) => {
 				resolve(d);
 			});
@@ -15,7 +15,7 @@ function getName(id) {
 
 function getAllModules() {
 	return new Promise((resolve, reject) => {
-		https.get('https://SERVER.URL/modules/list', (res) => {
+		https.get(`${process.env.SERVER_URL}/modules/get`, (res) => {
 			res.on('data', (d) => {
 				resolve(d);
 			});
@@ -40,11 +40,11 @@ function addModuleToBot(req, res) {
 			res.render('add_module_to_bot', {
 				botName: name,
 				allModules: allModules,
-				serverUrl: process.env.dev ? '' : '',
+				serverUrl: process.env.SERVER_URL,
 			})
 		).catch((err) => {
-		return console.error(err);
-	});
+			return console.error(err);
+		});
 }
 
-module.exports = {addModuleToBot,};
+module.exports = {addModuleToBot, };

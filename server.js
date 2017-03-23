@@ -18,8 +18,8 @@ const adminController = require('./controllers/admin');
 const HomeController = require('./controllers/home');
 const userController = require('./controllers/user');
 const contactController = require('./controllers/contact');
-const BotController = require('./controllers/bots');
-const ModulesController = require('./controllers/modules');
+const botController = require('./controllers/bots');
+const modulesController = require('./controllers/modules');
 
 // Passport OAuth strategies
 require('./config/passport');
@@ -81,8 +81,9 @@ app.get('/logout', userController.logout);
 app.get('/unlink/:provider', userController.ensureAuthenticated, userController.unlink);
 app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'user_location', ], }));
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/account', failureRedirect: '/login', }));
-app.get('/bots/:botId/add-module', BotController.addModuleToBot);
-app.get('/modules/:userId/upload', ModulesController.uploadModule);
+app.get('/bots/:botId/add-module', botController.addModuleToBot);
+app.get('/modules/:userId/upload', modulesController.uploadModule);
+app.get('/modules/:moduleId', modulesController.viewDetails);
 
 // Production error handler
 if (app.get('env') === 'production') {
@@ -93,7 +94,7 @@ if (app.get('env') === 'production') {
 }
 
 app.listen(app.get('port'), () => {
-	console.log(`Express server listening on port ${  app.get('port')}`);
+	console.log(`Express server listening on port ${app.get('port')}`);
 });
 
 module.exports = app;
