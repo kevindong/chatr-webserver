@@ -3,6 +3,7 @@ const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const passport = require('passport');
 const User = require('../models/User');
+const https = require('https');
 
 /**
  * Login required middleware
@@ -169,11 +170,32 @@ exports.accountPut = function(req, res, next) {
  * DELETE /account
  */
 exports.accountDelete = function(req, res, next) {
+	let options = {
+		hostname: process.env.API_SERVER,
+		port: 443,
+		path: '/users/delete',
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+  		}
+	};
+	let request = https.request(options, function(a) {
+		console.log('Status: ' + a.statusCode);
+		a.setEncoding('utf8');
+		a.on('data', function (body) {
+			console.log('Body: ' + body);
+		});
+	});
+	request.on('error', function(e) {
+		console.log('problem with request: ' + e.message);
+	});
+	request.write(`{"email": "${req.user.attributes.email}"}`);
+	request.end();
 	new User({ id: req.user.id, }).destroy().then((user) => {
 		req.logout();
 		req.flash('info', { msg: 'Your account has been permanently deleted.', });
 		res.redirect('/');
-	});
+	});	
 };
 
 /**
