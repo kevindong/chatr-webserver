@@ -2,7 +2,7 @@ const https = require('https');
 
 function getModules(userId) {
 	return new Promise((resolve, reject) => {
-		https.get(`${process.env.SERVER_URL}/modules/${userId}/list`, (res) => {
+		https.get(`${process.env.API_SERVER}/modules/${userId}/list`, (res) => {
 			res.on('data', (d) => {
 				resolve(JSON.parse(d.toString()));
 			});
@@ -39,7 +39,7 @@ function listAll(req, res) {
 }
 
 function viewDetails(req, res) {
-	https.get(`${process.env.SERVER_URL}/modules/get/${req.params.moduleId}`, (httpsRes) => {
+	https.get(`${process.env.API_SERVER}/modules/get/${req.params.moduleId}`, (httpsRes) => {
 		httpsRes.on('data', (d) => {
 			const module = JSON.parse(d.toString());
 			res.render('view_module_details', {
