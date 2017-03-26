@@ -2,9 +2,9 @@ const https = require('https');
 
 function getModules(userId) {
 	return new Promise((resolve, reject) => {
-		https.get(`https://chatr-apiserver-dev/modules/${userId}/list`, (res) => {
+		https.get(`${process.env.SERVER_URL}/modules/${userId}/list`, (res) => {
 			res.on('data', (d) => {
-				resolve(d);
+				resolve(JSON.parse(d.toString()));
 			});
 		}).on('error', (err) => {
 			reject(err);
@@ -13,9 +13,11 @@ function getModules(userId) {
 }
 
 function uploadModule(req, res) {
-	res.render('upload_module', {
-		modules: getModules(req.params.userId),
-		serverUrl: '',
+	getModules(req.params.userId).then((modules) => {
+		res.render('upload_module', {
+			modules: modules,
+			serverUrl: '',
+		});
 	});
 }
 
@@ -34,7 +36,22 @@ function listAll(req, res) {
 			modules: JSON.parse(data),
 		});
 	});
-};
+}
 
+function viewDetails(req, res) {
+	https.get(`${process.env.SERVER_URL}/modules/get/${req.params.moduleId}`, (httpsRes) => {
+		httpsRes.on('data', (d) => {
+			const module = JSON.parse(d.toString());
+			res.render('view_module_details', {
+				botName: module.name,
+				botDesc: module.description,
+				author: module.userId,
+				created: module.createdAt,
+				lastUpdated: module.updatedAt,
+				code: module.code,
+			});
+		});
+	});
+}
 
-module.exports = {uploadModule, listAll};
+module.exports = {uploadModule, listAll, viewDetails, };
