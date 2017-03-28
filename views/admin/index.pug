@@ -26,8 +26,9 @@ html(lang='en')
 							.col-sm-6
 								h4.list-group-item-heading #{module.name}
 								p.list-group-item-text #{module.description}
-								form(action='localhost:8080/modules/codeIsApproved', method='post')
+								form(action='https://chatr-apiserver-dev.herokuapp.com/modules/approve/' + module.id, method='post')
 									input.btn.btn-success(name='approve', type='submit', value='true')
+								form(action='https://chatr-apiserver-dev.herokuapp.com/modules/deny/' + module.id, method='post')
 									input.btn.btn-danger(name='deny', type='submit', value='false')
 							.spacer-xs.visible-xs
 							.col-sm-6
