@@ -1,0 +1,19 @@
+form(id="search")
+    label(for="q") Query
+    input(name="q", id="q", type="text")
+    br
+    label(for="name") Name
+    input(name="name", id="name", type="checkbox", checked)
+    br
+    label(for="description") Description
+    input(name="description", id="description", type="checkbox", checked)
+    br
+    label(for="author") Author
+    input(name="author", id="author", type="checkbox", checked)
+    br
+    label(for="code") Code
+    input(name="code", id="code", type="checkbox", checked)
+    br
+    button(type="submit")
+ul(id="results")
+script(src="search.js")

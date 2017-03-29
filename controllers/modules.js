@@ -54,4 +54,8 @@ function viewDetails(req, res) {
 	});
 }
 
-module.exports = {uploadModule, listAll, viewDetails, };
+function search(req, res) {
+	res.render('search');
+}
+
+module.exports = {uploadModule, listAll, viewDetails, search, };
