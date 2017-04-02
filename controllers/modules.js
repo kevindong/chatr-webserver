@@ -22,6 +22,7 @@ function uploadModule(req, res) {
 }
 
 function listAll(req, res) {
+	console.log("listall reached");
 	(new Promise((resolve, reject) => {
 		https.get(`https://${process.env.API_SERVER}/modules/get`, (res) => {
 			res.on('data', (d) => {
@@ -54,4 +55,43 @@ function viewDetails(req, res) {
 	});
 }
 
-module.exports = {uploadModule, listAll, viewDetails, };
+function deleteConfirm(req, res) {
+	https.get(`https://${process.env.API_SERVER}/modules/get/${req.params.moduleId}`, (httpsRes) => {
+		httpsRes.on('data', (d) => {
+			const module = JSON.parse(d.toString());
+			const test = `/modules/${module.id}/delete`;
+			console.log(test);
+			res.render('confirm_module_delete', {
+				module: module,
+				deleteLink: test
+			});
+		});
+	});
+}
+
+function moduleDelete(req, res) {
+	const options = {
+		hostname: process.env.API_SERVER,
+		port: 443,
+		path: '/modules/delete',
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+  		},
+	};
+	const request = https.request(options, (a) => {
+		console.log(`Status: ${a.statusCode}`);
+		a.setEncoding('utf8');
+		a.on('data', (body) => {
+			console.log(`Body: ${body}`);
+		});
+	});
+	request.on('error', (e) => {
+		console.log(`problem with request: ${e.message}`);
+	});
+	request.write(`{"id": "${req.params.moduleId}"}`);
+	request.end();
+	res.redirect('/');
+}
+
+module.exports = {uploadModule, listAll, viewDetails, moduleDelete, deleteConfirm};
