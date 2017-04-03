@@ -83,11 +83,11 @@ app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', '
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/account', failureRedirect: '/login', }));
 app.get('/bots/:botId/add-module', botController.addModuleToBot);
 app.get('/modules/:userId/upload', modulesController.uploadModule);
+app.get('/modules/search', modulesController.search);
 app.get('/modules/:moduleId', modulesController.viewDetails);
 app.get('/modules', modulesController.listAll);
 app.get('/modules/:moduleId/delete/confirm', modulesController.deleteConfirm);
 app.get('/modules/:moduleId/delete', modulesController.moduleDelete);
-app.get('/modules/search', modulesController.search);
 
 // Production error handler
 if (app.get('env') === 'production') {

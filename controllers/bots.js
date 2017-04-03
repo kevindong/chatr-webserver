@@ -1,14 +1,24 @@
 'use strict';
 const https = require('https');
 
-function getName(id) {
+function getEmailOfBotsUser(id) {
 	return new Promise((resolve, reject) => {
 		https.get(`${process.env.API_SERVER}/modules/${id}`, (res) => {
 			res.on('data', (d) => {
-				resolve(d);
+				resolve(d.userId);
 			});
 		}).on('error', (err) => {
 			return reject(err);
+		});
+	}).then((userId) => {
+		return new Promise((resolve, reject) => {
+			https.get(`${process.env.API_SERVER}/users/get/${userId}`, (res) => {
+				res.on('data', (d) => {
+					resolve(d.email);
+				});
+			}).on('error', (err) => {
+				return reject(err);
+			});
 		});
 	});
 }
@@ -26,25 +36,23 @@ function getAllModules() {
 }
 
 function addModuleToBot(req, res) {
-	let name = 'Bot', allModules = ['how', 'are', 'you',];
+	let email = '';
 
-	getName(req.params.botId)
-		.then((n) => {
-			name = n;
+	getEmailOfBotsUser(req.params.botId)
+		.then((e) => {
+			email = `${e}'s Bot`;
 		})
-		.then(getAllModules(req.params.botId))
-		.then((m) => {
-			allModules = m;
-		})
-		.then(
+		.then(getAllModules)
+		.then((allModules) => {
 			res.render('add_module_to_bot', {
-				botName: name,
+				botName: email,
 				allModules: allModules,
 				serverUrl: process.env.API_SERVER,
-			})
-		).catch((err) => {
-			return console.error(err);
+			});
+		}).catch((e) => {
+			console.error(e);
+			res.status(500).send(e);
 		});
 }
 
-module.exports = {addModuleToBot, };
+module.exports = {addModuleToBot,};

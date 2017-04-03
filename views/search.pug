@@ -1,3 +1,4 @@
+import ../templates/Header:Footer/header.pug
 form(id="search")
     label(for="q") Query
     input(name="q", id="q", type="text")
@@ -14,6 +15,8 @@ form(id="search")
     label(for="code") Code
     input(name="code", id="code", type="checkbox", checked)
     br
-    button(type="submit")
+    button(type="submit") Search
 ul(id="results")
-script(src="search.js")
+script
+    import search.js
+import ../templates/Header:Footer/footer.pug

@@ -1,4 +1,4 @@
-const https = require('https');
+const https = require('http');
 
 function getModules(userId) {
 	return new Promise((resolve, reject) => {
@@ -18,28 +18,44 @@ function uploadModule(req, res) {
 			modules: modules,
 			serverUrl: '',
 		});
+	}).catch((e) => {
+		console.error(e);
+		res.status(500).send(e);
 	});
 }
 
 function listAll(req, res) {
-	console.log("listall reached");
-	(new Promise((resolve, reject) => {
-		https.get(`https://${process.env.API_SERVER}/modules/get`, (res) => {
+	new Promise((resolve, reject) => {
+		https.get(`${process.env.API_SERVER}/modules/get`, (res) => {
+			console.log('statusCode:', res.statusCode);
+			console.log('headers:', res.headers);
+
 			res.on('data', (d) => {
+				console.log(d);
 				resolve(d);
 			});
 		}).on('error', (err) => {
+			console.log(err, `${process.env.API_SERVER}/modules/get`);
 			reject(err);
 		});
-	})).then((data) => {
+	}).then((data) => {
+		console.log(data);
 		res.render('module', {
 			title: 'Modules',
 			modules: JSON.parse(data),
 		});
+	}).catch((e) => {
+		console.error(e);
+		res.status(500).send(e);
 	});
 }
 
 function viewDetails(req, res) {
+	if (req.params.moduleId !== 'number') {
+		res.end();
+		return;
+	}
+
 	https.get(`${process.env.API_SERVER}/modules/get/${req.params.moduleId}`, (httpsRes) => {
 		httpsRes.on('data', (d) => {
 			const module = JSON.parse(d.toString());
@@ -51,6 +67,11 @@ function viewDetails(req, res) {
 				lastUpdated: module.updatedAt,
 				code: module.code,
 			});
+		});
+
+		httpsRes.on('error', (e) => {
+			console.error(e);
+			res.status(500).send(e);
 		});
 	});
 }
@@ -98,4 +119,4 @@ function moduleDelete(req, res) {
 	res.redirect('/');
 }
 
-module.exports = {uploadModule, listAll, viewDetails, moduleDelete, deleteConfirm};
+module.exports = {uploadModule, listAll, viewDetails, moduleDelete, deleteConfirm, search};
