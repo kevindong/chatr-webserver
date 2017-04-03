@@ -1,0 +1,18 @@
+doctype html
+head
+    title Upload Module
+body
+    form(id="update-module", method="POST", enctype="multipart/form-data", action=serverUrl)
+        label(for="module") Module You Want To Update
+        br
+        select(id="module", name="module")
+            for module in modules
+                option(value=module)=module
+        br
+        br
+        label(for="code") File(s)
+        br
+        input(type="file", name="code", id="code", multiple)
+        br
+        br
+        button(type="submit") Submit
