@@ -4,6 +4,7 @@ html
         meta(charset="utf-8")
         title Upload Module
     body
+        include ../../templates/Header:Footer/header.pug
         h1 Your Modules
         ul
             each module in modules
@@ -21,3 +22,4 @@ html
             br
             br
             button(type="submit") Submit
+        include ../../templates/Header:Footer/footer.pug

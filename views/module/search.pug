@@ -1,4 +1,4 @@
-import ../templates/Header:Footer/header.pug
+include ../../templates/Header:Footer/header.pug
 form(id="search")
     label(for="q") Query
     input(name="q", id="q", type="text")
@@ -18,5 +18,5 @@ form(id="search")
     button(type="submit") Search
 ul(id="results")
 script
-    import search.js
-import ../templates/Header:Footer/footer.pug
+    include search.js
+include ../../templates/Header:Footer/header.pug

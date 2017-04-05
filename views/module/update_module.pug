@@ -2,6 +2,7 @@ doctype html
 head
     title Upload Module
 body
+    include ../../templates/Header:Footer/header.pug
     form(id="update-module", method="POST", enctype="multipart/form-data", action=serverUrl)
         label(for="module") Module You Want To Update
         br
@@ -16,3 +17,4 @@ body
         br
         br
         button(type="submit") Submit
+    include ../../templates/Header:Footer/footer.pug

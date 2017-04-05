@@ -4,12 +4,19 @@ html(lang="en")
         meta(charset="UTF-8")
         title Add Modules
     body
-        form(method="POST", action=serverUrl)
-            h1=botName
+        include ../../templates/Header:Footer/header.pug
+
+            h1 Your Bot
+            h3 Current Modules
+            ul
+                each bot in currentModules
+                    li=bot
             h3 Available Modules
-            each bot in allModules
-                input(type="checkbox", value=bot, name=bot, id=bot)
-                label(for=bot)=bot
+            form(method="POST", action=serverUrl)
+                each bot in allModules
+                    input(type="checkbox", value=bot, name=bot, id=bot)
+                    label(for=bot)=bot
+                    br
                 br
-            br
-            button(type="submit") Submit
+                button(type="submit") Submit
+        include ../../templates/Header:Footer/footer.pug

@@ -9,6 +9,7 @@ html(lang='en')
 		script(type='text/javascript', src="/js/lib/bootstrap.js")
 		title Chatr
 	body
+		include ../../templates/Header:Footer/header.pug
 		.container
 			.col-md-12
 				.panel.panel-primary
@@ -22,3 +23,4 @@ html(lang='en')
 										p #{module.description}
 										hr
 										p #{module.code}
+		include ../../templates/Header:Footer/footer.pug

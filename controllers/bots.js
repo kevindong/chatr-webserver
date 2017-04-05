@@ -1,5 +1,5 @@
 'use strict';
-const https = require('https');
+const https = require('http');
 
 function getEmailOfBotsUser(id) {
 	return new Promise((resolve, reject) => {
@@ -27,7 +27,7 @@ function getAllModules() {
 	return new Promise((resolve, reject) => {
 		https.get(`${process.env.API_SERVER}/modules/get`, (res) => {
 			res.on('data', (d) => {
-				resolve(d);
+				resolve(JSON.parse(d.toString()));
 			});
 		}).on('error', (err) => {
 			return reject(err);
@@ -44,9 +44,9 @@ function addModuleToBot(req, res) {
 		})
 		.then(getAllModules)
 		.then((allModules) => {
-			res.render('add_module_to_bot', {
+			res.render('module/add_module_to_bot', {
 				botName: email,
-				allModules: allModules,
+				allModules: allModules.map((e) => { return e.name; }),
 				serverUrl: process.env.API_SERVER,
 			});
 		}).catch((e) => {
@@ -55,4 +55,4 @@ function addModuleToBot(req, res) {
 		});
 }
 
-module.exports = {addModuleToBot,};
+module.exports = {addModuleToBot, };
