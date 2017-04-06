@@ -1,0 +1,24 @@
+doctype html
+html(lang='en')
+	head
+		meta(charset='UTF-8')
+		meta(http-equiv='X-UA-COMPATIBLE', content='IE=EDGE')
+		meta(name='viewport', content='width=device-width, initial-scale=1')
+		link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css", integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7", crossorigin="anonymous")
+		script(type='text/javascript', src="/js/lib/jquery.js")
+		script(type='text/javascript', src="/js/lib/bootstrap.js")
+		title Chatr
+	body
+		.container
+			.panel.panel-primary
+				.panel-heading Module Name: #{module.name}
+				.panel-body
+					h4 Module Description:
+					p #{module.description}
+					hr
+					h4 Module Code: 
+					p #{module.code}
+			.panel.panel-danger
+				.panel-heading Are you sure you want to delete this panel?
+				.panel-footer
+					a(href=deleteLink class='btn btn-danger') Delete
