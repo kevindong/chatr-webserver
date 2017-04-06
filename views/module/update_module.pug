@@ -1,23 +1,29 @@
 doctype html
 head
-    title Update Module
-    include ../../templates/head
-    //style
-    //    include style.css
+	title Update Module
+	include ../../templates/head
+	style
+		include style.css
+		include panel.css
 body
-    include ../../templates/Header:Footer/header.pug
-    form(id="update-module", method="POST", enctype="multipart/form-data", action=serverUrl)
-        label(for="module") Module You Want To Update
-        br
-        select(id="module", name="module")
-            for module in modules
-                option(value=module)=module
-        br
-        br
-        label(for="code") File(s)
-        br
-        input(type="file", name="code", id="code", multiple)
-        br
-        br
-        button(type="submit") Submit
-    include ../../templates/Header:Footer/footer.pug
+	include ../../templates/Header:Footer/header.pug
+	.panel.panel-default
+		.panel-heading
+			h1 Update Module
+		.panel-body
+			form(id="update-module", method="POST", enctype="multipart/form-data", action=serverUrl)
+				label Module You Want To Update
+				br
+				for module in modules
+					input(type="radio" id=module, name=module)
+					span=module
+					br
+				br
+				// TODO: Make all fields editable
+				.input-group
+					span.input-group-addon
+						label(for="code") File(s)
+					input.form-control(type="file", name="code", id="code", multiple)
+				br
+				button.btn.btn-primary(type="submit") Submit
+	include ../../templates/Header:Footer/footer.pug

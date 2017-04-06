@@ -3,8 +3,8 @@ html(lang='en')
 	head
 		include ../../templates/head
 		title Chatr
-		//style
-			//include style.css
+		style
+			include style.css
 	body
 		include ../../templates/Header:Footer/header.pug
 		.container
@@ -20,4 +20,6 @@ html(lang='en')
 										p #{module.description}
 										hr
 										p #{module.code}
+										hr
+										a(href='/modules/' + module.id) View More Details
 		include ../../templates/Header:Footer/footer.pug

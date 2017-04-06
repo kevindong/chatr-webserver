@@ -1,27 +1,44 @@
 doctype html
 html
-    head
-        title Upload Module
-        include ../../templates/head
-        //style
-        //    include style.css
-    body
-        include ../../templates/Header:Footer/header.pug
-        h1 Your Modules
-        ul
-            each module in modules
-                li=module
-        h1 Upload New Module
-        form(id="upload-module", method="POST", enctype="multipart/form-data", action=serverUrl)
-            label(for="module_name") Module Name
-            input(type="text", id="module_name", name="module_name")
-            br
-            label(for="module_desc") Module Description
-            input(type="text" , id="module_desc", name="module_desc")
-            br
-            label(for="code") File(s)
-            input(type="file", name="code", id="code", multiple)
-            br
-            br
-            button(type="submit") Submit
-        include ../../templates/Header:Footer/footer.pug
+	head
+		title Upload Module
+		include ../../templates/head
+		style
+			include style.css
+			include panel.css
+	body
+		include ../../templates/Header:Footer/header.pug
+		.panel.panel-default
+			.panel-heading
+				h1 Your Modules
+			.panel-body
+				.list-group
+					each module in modules
+						a.list-group-item(href='/modules/' + module.id) #{module.name}
+		br
+		.panel.panel-default
+			.panel-heading
+				h1 Upload New Module
+			.panel-body
+				form(id="upload-module", method="POST", enctype="multipart/form-data", action=serverUrl)
+					.input-group
+						span.input-group-addon
+							label(for="module_name") Module Name
+						input.form-control(type="text", id="module_name", name="module_name")
+					br
+
+					.input-group
+						span.input-group-addon
+							label(for="module_desc") Module Description
+						input.form-control(type="text" , id="module_desc", name="module_desc")
+					br
+
+					.input-group
+						span.input-group-addon
+							label(for="code") File(s)
+						input.form-control(type="file", name="code", id="code", multiple)
+					br
+
+					br
+					button.btn.btn-primary(type="submit") Submit
+		include ../../templates/Header:Footer/footer.pug

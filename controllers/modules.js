@@ -15,9 +15,7 @@ function getModules(userId) {
 function uploadModule(req, res) {
 	getModules(req.params.userId).then((modules) => {
 		res.render('module/upload_module', {
-			modules: modules.map((m) => {
-				return m.name;
-			}),
+			modules: modules,
 			serverUrl: `${process.env.API_SERVER}/modules/upload`,
 		});
 	}).catch((e) => {
@@ -143,9 +141,16 @@ function moduleDelete(req, res) {
 
 function updateModule(req, res) {
 	// Get user's modules
-	res.render('module/update_module', {
-		modules: []
-	});
+	getModules(req.params.userId)
+		.then((modules) => {
+			res.render('module/update_module', {
+				modules: modules.map((m) => { return m.name; }),
+			});
+		})
+		.catch((e) => {
+			console.error(e);
+			res.status(500).send(e);
+		});
 }
 
 module.exports = {uploadModule, listAll, viewDetails, moduleDelete, deleteConfirm, search, updateModule, };

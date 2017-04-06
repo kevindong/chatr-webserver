@@ -12,9 +12,11 @@ document.getElementById('search').onsubmit = function() {
 			// Success!
 			const data = JSON.parse(request.responseText);
 			data.forEach((e) => {
-				const li = document.createElement('li');
-				li.innerHTML = `<a href=${e.id}>${e.name}</a>`;
-				document.getElementById('results').appendChild(li);
+				const link = document.createElement('a');
+				link.className = 'list-group-item';
+				link.setAttribute('href', `/modules/${module.id}`);
+				link.innerText = e.name;
+				document.getElementById('results').appendChild(link);
 			});
 		} else {
 			// We reached our target server, but it returned an error

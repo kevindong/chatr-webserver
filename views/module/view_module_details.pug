@@ -1,28 +1,30 @@
 head
 	title #{botName} | Chatr
 	include ../../templates/head
-	//style
-	//	include ../../node_modules/highlightjs/styles/solarized-dark.css
-	//	include style.css
+	style
+		include ../../node_modules/highlightjs/styles/solarized-dark.css
+		include style.css
+		include panel.css
 body
 	include ../../templates/Header:Footer/header.pug
-	h1 #{botName}
-	p #{botDesc}
-	br
-	h3 Details
-	ul
-		li <strong>Author: </strong> #{author}
-		li <strong>Created At: </strong> #{created}
-		li <strong>Last Updated: </strong> #{lastUpdated}
-		li <strong>Number of Bots Using this Module:</strong> #{count}
-	br
-	h3 Code
+	div.panel.panel-default
+		div.panel-heading
+			h1 #{botName}
+		div.panel-body
+			h1 <small>#{botDesc}</small>
+		ul.list-group
+			li.list-group-item.active Details
+			li.list-group-item <strong>Author: </strong> #{author}
+			li.list-group-item <strong>Created At: </strong> #{created}
+			li.list-group-item <strong>Last Updated: </strong> #{lastUpdated}
+			li.list-group-item <strong>Number of Bots Using this Module:</strong> #{count}
+		div.panel-body
+			h1 <small>Code</small>
+			pre
+				code=code
 
-	pre
-		code=code
-
-	//script
-	//	include ../../node_modules/highlightjs/highlight.pack.min.js
-	//	hljs.initHighlightingOnLoad()
+		//script
+		//	include ../../node_modules/highlightjs/highlight.pack.min.js
+		//	hljs.initHighlightingOnLoad()
 
 	include ../../templates/Header:Footer/footer.pug
