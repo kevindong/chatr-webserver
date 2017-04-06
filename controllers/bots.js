@@ -55,8 +55,8 @@ function addModuleToBot(req, res) {
 		.then((e) => {
 			email = `${e}'s Bot`;
 		})
-		.then(getBotsModules(req.params.botId))
-		.then((modules) => {botModules = modules.map((e) => { return e.name; });})
+		// .then(getBotsModules(req.params.botId))
+		// .then((modules) => { botModules = modules.map((e) => { return e.name; }); })
 		.then(getAllModules)
 		.then((allModules) => {
 			res.render('module/add_module_to_bot', {

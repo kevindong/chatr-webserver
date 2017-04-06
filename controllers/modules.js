@@ -4,7 +4,6 @@ function getModules(userId) {
 	return new Promise((resolve, reject) => {
 		https.get(`${process.env.API_SERVER}/modules/getByUser/${userId}`, (res) => {
 			res.on('data', (d) => {
-				console.log(d.toString());
 				resolve(JSON.parse(d.toString()));
 			});
 		}).on('error', (err) => {
@@ -15,9 +14,11 @@ function getModules(userId) {
 
 function uploadModule(req, res) {
 	getModules(req.params.userId).then((modules) => {
-		res.render('upload_module', {
-			modules: modules,
-			serverUrl: '',
+		res.render('module/upload_module', {
+			modules: modules.map((m) => {
+				return m.name;
+			}),
+			serverUrl: `${process.env.API_SERVER}/modules/upload`,
 		});
 	}).catch((e) => {
 		console.error(e);
@@ -28,9 +29,6 @@ function uploadModule(req, res) {
 function listAll(req, res) {
 	new Promise((resolve, reject) => {
 		https.get(`${process.env.API_SERVER}/modules/get`, (res) => {
-			console.log('statusCode:', res.statusCode);
-			console.log('headers:', res.headers);
-
 			res.on('data', (d) => {
 				console.log(d);
 				resolve(d);
@@ -40,7 +38,6 @@ function listAll(req, res) {
 			reject(err);
 		});
 	}).then((data) => {
-		console.log(data);
 		res.render('module', {
 			title: 'Modules',
 			modules: JSON.parse(data),
@@ -102,7 +99,7 @@ function viewDetails(req, res) {
 }
 
 function search(req, res) {
-	res.render('search');
+	res.render('module/search');
 }
 
 function deleteConfirm(req, res) {
@@ -127,7 +124,7 @@ function moduleDelete(req, res) {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
-  		},
+		},
 	};
 	const request = https.request(options, (a) => {
 		console.log(`Status: ${a.statusCode}`);
@@ -144,4 +141,11 @@ function moduleDelete(req, res) {
 	res.redirect('/');
 }
 
-module.exports = {uploadModule, listAll, viewDetails, moduleDelete, deleteConfirm, search, };
+function updateModule(req, res) {
+	// Get user's modules
+	res.render('module/update_module', {
+		modules: []
+	});
+}
+
+module.exports = {uploadModule, listAll, viewDetails, moduleDelete, deleteConfirm, search, updateModule, };

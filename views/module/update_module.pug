@@ -1,8 +1,9 @@
 doctype html
 head
     title Update Module
-    style
-        include style.css
+    include ../../templates/head
+    //style
+    //    include style.css
 body
     include ../../templates/Header:Footer/header.pug
     form(id="update-module", method="POST", enctype="multipart/form-data", action=serverUrl)

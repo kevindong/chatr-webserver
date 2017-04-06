@@ -83,6 +83,7 @@ app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', '
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/account', failureRedirect: '/login', }));
 app.get('/bots/:botId/add-module', botController.addModuleToBot);
 app.get('/modules/:userId/upload', modulesController.uploadModule);
+app.get('/modules/:userId/update', modulesController.updateModule);
 app.get('/modules/search', modulesController.search);
 app.get('/modules/:moduleId', modulesController.viewDetails);
 app.get('/modules', modulesController.listAll);
