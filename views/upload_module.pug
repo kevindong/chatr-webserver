@@ -8,6 +8,7 @@ html
         ul
             each module in modules
                 li=module
+            button(type="remove") Remove
         h1 Upload New Module
         form(id="upload-module", method="POST", enctype="multipart/form-data", action=serverUrl)
             label(for="module_name") Module Name
