@@ -1,14 +1,27 @@
-include ../../templates/Header:Footer/header.pug
-h1 #{botName}
-p #{botDesc}
-br
-h3 Details
-ul
-    li <strong>Author ID: </strong> #{author}
-    li <strong>Created At: </strong> #{created}
-    li <strong>Last Updated: </strong> #{lastUpdated}
-    li <strong>Number of Bots Using this Module: </strong>
-br
-h3 Code
-div #{code}
-include ../../templates/Header:Footer/footer.pug
+head
+	title #{botName} | Chatr
+	style
+		include ../../node_modules/highlightjs/styles/solarized-dark.css
+		include style.css
+body
+	include ../../templates/Header:Footer/header.pug
+	h1 #{botName}
+	p #{botDesc}
+	br
+	h3 Details
+	ul
+		li <strong>Author: </strong> #{author}
+		li <strong>Created At: </strong> #{created}
+		li <strong>Last Updated: </strong> #{lastUpdated}
+		li <strong>Number of Bots Using this Module:</strong> #{count}
+	br
+	h3 Code
+
+	pre
+		code=code
+
+	//script
+	//	include ../../node_modules/highlightjs/highlight.pack.min.js
+	//	hljs.initHighlightingOnLoad()
+
+	include ../../templates/Header:Footer/footer.pug

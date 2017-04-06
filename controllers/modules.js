@@ -2,8 +2,9 @@ const https = require('http');
 
 function getModules(userId) {
 	return new Promise((resolve, reject) => {
-		https.get(`${process.env.API_SERVER}/modules/${userId}/list`, (res) => {
+		https.get(`${process.env.API_SERVER}/modules/getByUser/${userId}`, (res) => {
 			res.on('data', (d) => {
+				console.log(d.toString());
 				resolve(JSON.parse(d.toString()));
 			});
 		}).on('error', (err) => {
@@ -51,21 +52,45 @@ function listAll(req, res) {
 }
 
 function viewDetails(req, res) {
-	if (req.params.moduleId !== 'number') {
-		res.end();
+	if (isNaN(Number(req.params.moduleId))) {
+		res.status(500).send('Please use a valid module id');
 		return;
 	}
 
 	https.get(`${process.env.API_SERVER}/modules/get/${req.params.moduleId}`, (httpsRes) => {
 		httpsRes.on('data', (d) => {
 			const module = JSON.parse(d.toString());
-			res.render('view_module_details', {
-				botName: module.name,
-				botDesc: module.description,
-				author: module.userId,
-				created: module.createdAt,
-				lastUpdated: module.updatedAt,
-				code: module.code,
+
+			https.get(`${process.env.API_SERVER}/users/get/${module.userId}`, (httpsRes2) => {
+				httpsRes2.on('data', (d2) => {
+					const author = JSON.parse(d2.toString());
+
+					https.get(`${process.env.API_SERVER}/usermodules/${req.params.moduleId}/getCount`, (httpsRes3) => {
+						httpsRes3.on('data', (d3) => {
+							const count = JSON.parse(d3.toString());
+
+							res.render('module/view_module_details', {
+								botName: module.name,
+								botDesc: module.description,
+								author: author.email,
+								created: module.createdAt,
+								count: count,
+								lastUpdated: module.updatedAt,
+								code: module.code,
+							});
+						});
+
+						httpsRes3.on('error', (e) => {
+							console.error(e);
+							res.send(e);
+						});
+					});
+				});
+
+				httpsRes2.on('error', (e2) => {
+					console.error(e2);
+					res.status(500).send(e2);
+				});
 			});
 		});
 
@@ -88,7 +113,7 @@ function deleteConfirm(req, res) {
 			console.log(test);
 			res.render('confirm_module_delete', {
 				module: module,
-				deleteLink: test
+				deleteLink: test,
 			});
 		});
 	});
@@ -119,4 +144,4 @@ function moduleDelete(req, res) {
 	res.redirect('/');
 }
 
-module.exports = {uploadModule, listAll, viewDetails, moduleDelete, deleteConfirm, search};
+module.exports = {uploadModule, listAll, viewDetails, moduleDelete, deleteConfirm, search, };

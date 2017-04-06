@@ -6,17 +6,20 @@ html(lang="en")
     body
         include ../../templates/Header:Footer/header.pug
 
-            h1 Your Bot
-            h3 Current Modules
-            ul
-                each bot in currentModules
-                    li=bot
-            h3 Available Modules
-            form(method="POST", action=serverUrl)
-                each bot in allModules
-                    input(type="checkbox", value=bot, name=bot, id=bot)
-                    label(for=bot)=bot
-                    br
+        h1 Your Bot
+
+        h3 Current Modules
+        ul
+            each bot in currentModules
+                li=bot
+
+        h3 Available Modules
+        form(method="POST", action=serverUrl)
+            each bot in allModules
+                input(type="checkbox", value=bot, name=bot, id=bot)
+                label(for=bot)=bot
                 br
-                button(type="submit") Submit
+            br
+            button(type="submit") Submit
+
         include ../../templates/Header:Footer/footer.pug

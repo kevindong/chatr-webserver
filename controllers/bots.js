@@ -35,18 +35,34 @@ function getAllModules() {
 	});
 }
 
+function getBotsModules(id) {
+	return new Promise((resolve, reject) => {
+		https.get(`${process.env.API_SERVER}/usermodules/${id}/getModules`, (res) => {
+			res.on('data', (d) => {
+				resolve(JSON.parse(d.toString()));
+			});
+		}).on('error', (err) => {
+			return reject(err);
+		});
+	});
+}
+
 function addModuleToBot(req, res) {
 	let email = '';
+	let botModules = [];
 
 	getEmailOfBotsUser(req.params.botId)
 		.then((e) => {
 			email = `${e}'s Bot`;
 		})
+		.then(getBotsModules(req.params.botId))
+		.then((modules) => {botModules = modules.map((e) => { return e.name; });})
 		.then(getAllModules)
 		.then((allModules) => {
 			res.render('module/add_module_to_bot', {
 				botName: email,
 				allModules: allModules.map((e) => { return e.name; }),
+				currentModules: botModules,
 				serverUrl: process.env.API_SERVER,
 			});
 		}).catch((e) => {
