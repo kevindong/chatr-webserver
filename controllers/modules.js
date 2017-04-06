@@ -26,10 +26,11 @@ function uploadModule(req, res) {
 
 function listAll(req, res) {
 	new Promise((resolve, reject) => {
-		https.get(`${process.env.API_SERVER}/modules/get`, (res) => {
-			res.on('data', (d) => {
-				console.log(d);
-				resolve(d);
+		https.get(`http://${process.env.API_SERVER}/modules/get`, (res) => {
+			let rawData = '';
+			res.on('data', (chunk) => rawData += chunk);
+			res.on('end', () => {
+				resolve(rawData);
 			});
 		}).on('error', (err) => {
 			console.log(err, `${process.env.API_SERVER}/modules/get`);
