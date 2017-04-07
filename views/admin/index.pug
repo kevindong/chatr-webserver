@@ -10,6 +10,15 @@ html(lang='en')
 		.container
 			.col-md-12
 				.panel.panel-primary
+					.panel-heading Message All Users
+					.panel-body
+						p Send a message to all users.
+						form(action='https://chatr-apiserver-dev.herokuapp.com/bot/messageall/users', method='post')
+							input(type='text')
+							input.btn.btn-success(type='submit', value='Send')
+		.container
+			.col-md-12
+				.panel.panel-primary
 					.panel-heading Pending Modules
 					.panel-body
 						p This is a list of modules that have been submitted by developers and are waiting for approval before being public on the marketplace.
@@ -22,11 +31,11 @@ html(lang='en')
 										hr
 										p #{module.code}
 										hr
-										a(href='/modules/' + module.id) View More Details
 										form(action='https://chatr-apiserver-dev.herokuapp.com/modules/approve/'+module.id, method='post')
 											input.btn.btn-success(type='submit', value='Approve')
 										form(action='https://chatr-apiserver-dev.herokuapp.com/modules/deny/'+module.id, method='post')
 											input.btn.btn-danger(type='submit', value='Deny')
+										a.btn(href='/modules/' + module.id) View More Details
 		.spacer
 		.container
 			.col-md-12
