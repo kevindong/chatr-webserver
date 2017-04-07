@@ -26,23 +26,32 @@ html(lang='en')
 							.col-sm-6
 								h4.list-group-item-heading #{module.name}
 								p.list-group-item-text #{module.description}
-								form(action='https://chatr-apiserver-dev.herokuapp.com/modules/approve/' + module.id, method='post')
-									input.btn.btn-success(name='approve', type='submit', value='true')
-								form(action='https://chatr-apiserver-dev.herokuapp.com/modules/deny/' + module.id, method='post')
-									input.btn.btn-danger(name='deny', type='submit', value='false')
-							.spacer-xs.visible-xs
+								p.list-group-item-text #{module.code}
+								form(action='https://chatr-apiserver-dev.herokuapp.com/modules/approve/'+module.id, method='post')
+									input.btn.btn-success(type='submit', value='Approve')
+								form(action='https://chatr-apiserver-dev.herokuapp.com/modules/deny/'+module.id, method='post')
+									input.btn.btn-danger(type='submit', value='Deny')
+		.spacer
+		.container
+			.block
+				h2 Banneded Modules
+				ul.list-group
+				each module in bannedModules
+					.list-group-item(href='#')
+						.row
 							.col-sm-6
+								h4.list-group-item-heading #{module.name}
+								p.list-group-item-text #{module.description}
 								p.list-group-item-text #{module.code}
 		.spacer
 		.container
 			.block
-				h2 Blacklisted Developers
-		.spacer
-		.container
-			.block
-				h2 Blacklisted Users
-		.spacer
-		.container
-			.block
-				h2 Blacklisted Modules
+				h2 Banned Users
+				ul.list-group
+				each user in bannedUsers
+					.list-group-item(href='#')
+						.row
+							.col-sm-6
+								h4.list-group-item-heading #{user.name}
+								p.list-group-item-text #{user.id}
 		.spacer

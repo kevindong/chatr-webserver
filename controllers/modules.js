@@ -2,7 +2,7 @@ const https = require('http');
 
 function getModules(userId) {
 	return new Promise((resolve, reject) => {
-		https.get(`${process.env.API_SERVER}/modules/getByUser/${userId}`, (res) => {
+		https.get(`http://${process.env.API_SERVER}/modules/getByUser/${userId}`, (res) => {
 			res.on('data', (d) => {
 				resolve(JSON.parse(d.toString()));
 			});
@@ -16,7 +16,7 @@ function uploadModule(req, res) {
 	getModules(req.params.userId).then((modules) => {
 		res.render('module/upload_module', {
 			modules: modules,
-			serverUrl: `${process.env.API_SERVER}/modules/upload`,
+			serverUrl: `http://${process.env.API_SERVER}/modules/upload`,
 		});
 	}).catch((e) => {
 		console.error(e);
@@ -33,7 +33,7 @@ function listAll(req, res) {
 				resolve(rawData);
 			});
 		}).on('error', (err) => {
-			console.log(err, `${process.env.API_SERVER}/modules/get`);
+			console.log(err, `http://${process.env.API_SERVER}/modules/get`);
 			reject(err);
 		});
 	}).then((data) => {
@@ -53,15 +53,15 @@ function viewDetails(req, res) {
 		return;
 	}
 
-	https.get(`${process.env.API_SERVER}/modules/get/${req.params.moduleId}`, (httpsRes) => {
+	https.get(`http://${process.env.API_SERVER}/modules/get/${req.params.moduleId}`, (httpsRes) => {
 		httpsRes.on('data', (d) => {
 			const module = JSON.parse(d.toString());
 
-			https.get(`${process.env.API_SERVER}/users/get/${module.userId}`, (httpsRes2) => {
+			https.get(`http://${process.env.API_SERVER}/users/get/${module.userId}`, (httpsRes2) => {
 				httpsRes2.on('data', (d2) => {
 					const author = JSON.parse(d2.toString());
 
-					https.get(`${process.env.API_SERVER}/usermodules/${req.params.moduleId}/getCount`, (httpsRes3) => {
+					https.get(`http://${process.env.API_SERVER}/usermodules/${req.params.moduleId}/getCount`, (httpsRes3) => {
 						httpsRes3.on('data', (d3) => {
 							const count = JSON.parse(d3.toString());
 
@@ -102,7 +102,7 @@ function search(req, res) {
 }
 
 function deleteConfirm(req, res) {
-	https.get(`https://${process.env.API_SERVER}/modules/get/${req.params.moduleId}`, (httpsRes) => {
+	https.get(`http://${process.env.API_SERVER}/modules/get/${req.params.moduleId}`, (httpsRes) => {
 		httpsRes.on('data', (d) => {
 			const module = JSON.parse(d.toString());
 			const test = `/modules/${module.id}/delete`;

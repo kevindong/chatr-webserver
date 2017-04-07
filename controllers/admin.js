@@ -9,10 +9,32 @@ exports.index = function(req, res) {
 		}).on('error', (err) => {
 			reject(err);
 		});
-	})).then((data) => {
-		res.render('admin', {
-			title: 'Admin',
-			pendingModules: JSON.parse(data),
+	})).then((pendingModules) => {
+		(new Promise((resolve, reject) => {
+			https.get('https://chatr-apiserver-dev.herokuapp.com/modules/banned', (res) => {
+				res.on('data', (d) => {
+					resolve(d);
+				});
+			}).on('error', (err) => {
+				reject(err);
+			});
+		})).then((bannedModules) => {
+			(new Promise((resolve, reject) => {
+				https.get('https://chatr-apiserver-dev.herokuapp.com/users/banned', (res) => {
+					res.on('data', (d) => {
+						resolve(d);
+					});
+				}).on('error', (err) => {
+					reject(err);
+					});
+			})).then((bannedUsers) => {
+				res.render('admin', {
+					title: 'Admin',
+					pendingModules: JSON.parse(pendingModules),
+					bannedModules: JSON.parse(bannedModules),
+					bannedUsers: JSON.parse(bannedUsers),
+				});
+			});
 		});
 	});
 };
