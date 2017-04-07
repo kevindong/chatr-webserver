@@ -1,5 +1,5 @@
 function doSearch() {
-	let url = `http://${server}/modules/search?`;
+	let url = `https://${server}/modules/search?`;
 	document.querySelectorAll('input').forEach((input, i) => {
 		if (input.id !== 'author') { url += `${(i > 0 ? '&' : '') + input.id}=${input.value}`; }
 	});
