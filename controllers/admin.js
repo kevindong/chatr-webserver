@@ -4,7 +4,8 @@ const User = require('../models/User');
 
 exports.index = function(req, res) {
 	(new Promise((resolve, reject) => {
-		https.get('https://chatr-apiserver-dev.herokuapp.com/modules/pending', (res) => {
+		console.log(`https://${process.env.API_SERVER}/modules/pending`);
+		https.get(`https://${process.env.API_SERVER}/modules/pending`, (res) => {
 			res.on('data', (d) => {
 				resolve(d);
 			});
@@ -13,7 +14,7 @@ exports.index = function(req, res) {
 		});
 	})).then((pendingModules) => {
 		(new Promise((resolve, reject) => {
-			https.get('https://chatr-apiserver-dev.herokuapp.com/modules/banned', (res) => {
+			https.get(`https://${process.env.API_SERVER}/modules/banned`, (res) => {
 				res.on('data', (d) => {
 					resolve(d);
 				});
@@ -22,7 +23,7 @@ exports.index = function(req, res) {
 			});
 		})).then((bannedModules) => {
 			(new Promise((resolve, reject) => {
-				https.get('https://chatr-apiserver-dev.herokuapp.com/users/banned', (res) => {
+				https.get(`https://${process.env.API_SERVER}/users/banned`, (res) => {
 					res.on('data', (d) => {
 						resolve(d);
 					});
