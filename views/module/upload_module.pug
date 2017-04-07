@@ -21,6 +21,8 @@ html
 				h1 Upload New Module
 			.panel-body
 				form(id="upload-module", method="POST", enctype="multipart/form-data", action=serverUrl)
+					input(hidden, type="text", id="userId", name="userId", value=userId)
+
 					.input-group
 						span.input-group-addon
 							label(for="module_name") Module Name

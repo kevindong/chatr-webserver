@@ -1,7 +1,7 @@
-document.getElementById('search').onsubmit = function() {
-	let url = `${process.env.API_SERVER}?`;
-	document.querySelectorAll('input:not[type=submit]').forEach((input, i) => {
-		url += `${(i > 0 ? '&' : '') + input.id}=${input.value}`;
+function doSearch() {
+	let url = `http://${server}/modules/search?`;
+	document.querySelectorAll('input').forEach((input, i) => {
+		if (input.id !== 'author') { url += `${(i > 0 ? '&' : '') + input.id}=${input.value}`; }
 	});
 
 	const request = new XMLHttpRequest();
@@ -11,10 +11,11 @@ document.getElementById('search').onsubmit = function() {
 		if (request.status >= 200 && request.status < 400) {
 			// Success!
 			const data = JSON.parse(request.responseText);
+			document.getElementById('results').innerHTML = '';
 			data.forEach((e) => {
 				const link = document.createElement('a');
 				link.className = 'list-group-item';
-				link.setAttribute('href', `/modules/${module.id}`);
+				link.setAttribute('href', `/modules/${e.id}`);
 				link.innerText = e.name;
 				document.getElementById('results').appendChild(link);
 			});
@@ -34,4 +35,6 @@ document.getElementById('search').onsubmit = function() {
 	};
 
 	request.send();
-};
+
+	return false;
+}

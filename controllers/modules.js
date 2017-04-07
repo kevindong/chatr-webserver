@@ -1,13 +1,13 @@
-const https = require('http');
+'use strict';
+const request = require('request');
 
 function getModules(userId) {
 	return new Promise((resolve, reject) => {
-		https.get(`http://${process.env.API_SERVER}/modules/getByUser/${userId}`, (res) => {
-			res.on('data', (d) => {
-				resolve(JSON.parse(d.toString()));
-			});
-		}).on('error', (err) => {
-			reject(err);
+		request(`http://${process.env.API_SERVER}/modules/getByUser/${userId}`, (error, response, body) => {
+			if (error) {
+				reject(error);
+			}
+			resolve(JSON.parse(body));
 		});
 	});
 }
@@ -16,7 +16,8 @@ function uploadModule(req, res) {
 	getModules(req.params.userId).then((modules) => {
 		res.render('module/upload_module', {
 			modules: modules,
-			serverUrl: `http://${process.env.API_SERVER}/modules/upload`,
+			userId: req.params.userId,
+			serverUrl: `http://${process.env.API_SERVER}/modules/upload?doRedirect`,
 		});
 	}).catch((e) => {
 		console.error(e);
@@ -26,20 +27,16 @@ function uploadModule(req, res) {
 
 function listAll(req, res) {
 	new Promise((resolve, reject) => {
-		https.get(`http://${process.env.API_SERVER}/modules/get`, (res) => {
-			let rawData = '';
-			res.on('data', (chunk) => rawData += chunk);
-			res.on('end', () => {
-				resolve(rawData);
-			});
-		}).on('error', (err) => {
-			console.log(err, `http://${process.env.API_SERVER}/modules/get`);
-			reject(err);
+		request(`http://${process.env.API_SERVER}/modules/get`, (error, response, body) => {
+			if (error) {
+				reject(error);
+			}
+			resolve(JSON.parse(body));
 		});
 	}).then((data) => {
 		res.render('module', {
 			title: 'Modules',
-			modules: JSON.parse(data),
+			modules: data,
 		});
 	}).catch((e) => {
 		console.error(e);
@@ -53,64 +50,63 @@ function viewDetails(req, res) {
 		return;
 	}
 
-	https.get(`http://${process.env.API_SERVER}/modules/get/${req.params.moduleId}`, (httpsRes) => {
-		httpsRes.on('data', (d) => {
-			const module = JSON.parse(d.toString());
+	request(`http://${process.env.API_SERVER}/modules/get/${req.params.moduleId}`, (error, response, body) => {
+		if (error) {
+			console.error(error);
+			res.status(500).send(error);
+		}
 
-			https.get(`http://${process.env.API_SERVER}/users/get/${module.userId}`, (httpsRes2) => {
-				httpsRes2.on('data', (d2) => {
-					const author = JSON.parse(d2.toString());
+		const module = JSON.parse(body);
 
-					https.get(`http://${process.env.API_SERVER}/usermodules/${req.params.moduleId}/getCount`, (httpsRes3) => {
-						httpsRes3.on('data', (d3) => {
-							const count = JSON.parse(d3.toString());
+		request(`http://${process.env.API_SERVER}/users/get/${module.userId}`, (error2, response2, body2) => {
+			if (error2) {
+				console.error(error);
+				res.status(500).send(error);
+			}
 
-							res.render('module/view_module_details', {
-								botName: module.name,
-								botDesc: module.description,
-								author: author.email,
-								created: module.createdAt,
-								count: count,
-								lastUpdated: module.updatedAt,
-								code: module.code,
-							});
-						});
+			const author = JSON.parse(body2);
 
-						httpsRes3.on('error', (e) => {
-							console.error(e);
-							res.send(e);
-						});
-					});
-				});
+			request(`http://${process.env.API_SERVER}/usermodules/${req.params.moduleId}/getCount`, (error3, response3, body3) => {
+				if (error3) {
+					console.error(error3);
+					res.status(500).send(error3);
+				}
 
-				httpsRes2.on('error', (e2) => {
-					console.error(e2);
-					res.status(500).send(e2);
+				const count = JSON.parse(body3);
+
+				res.render('module/view_module_details', {
+					botName: module.name,
+					botDesc: module.description,
+					author: author.email,
+					created: module.createdAt,
+					count: count,
+					lastUpdated: module.updatedAt,
+					code: module.code,
 				});
 			});
-		});
-
-		httpsRes.on('error', (e) => {
-			console.error(e);
-			res.status(500).send(e);
 		});
 	});
 }
 
 function search(req, res) {
-	res.render('module/search');
+	res.render('module/search', {
+		set_api: `let server="${process.env.API_SERVER}";\n`,
+	});
 }
 
 function deleteConfirm(req, res) {
-	https.get(`http://${process.env.API_SERVER}/modules/get/${req.params.moduleId}`, (httpsRes) => {
-		httpsRes.on('data', (d) => {
-			const module = JSON.parse(d.toString());
-			const test = `/modules/${module.id}/delete`;
-			console.log(test);
-			res.render('confirm_module_delete', {
-				module: module,
-				deleteLink: test,
-			});
+	request(`https://${process.env.API_SERVER}/modules/get/${req.params.moduleId}`, (error, response, body) => {
+		if (error) {
+			console.error(error);
+			res.status(500).send(error);
+		}
+
+		const module = JSON.parse(body);
+		const test = `/modules/${module.id}/delete`;
+		console.log(test);
+		res.render('confirm_module_delete', {
+			module: module,
+			deleteLink: test,
 		});
 	});
 }
@@ -125,18 +121,18 @@ function moduleDelete(req, res) {
 			'Content-Type': 'application/json',
 		},
 	};
-	const request = https.request(options, (a) => {
+	const myRequest = request(options, (a) => {
 		console.log(`Status: ${a.statusCode}`);
 		a.setEncoding('utf8');
 		a.on('data', (body) => {
 			console.log(`Body: ${body}`);
 		});
 	});
-	request.on('error', (e) => {
+	myRequest.on('error', (e) => {
 		console.log(`problem with request: ${e.message}`);
 	});
-	request.write(`{"id": "${req.params.moduleId}"}`);
-	request.end();
+	myRequest.write(`{"id": "${req.params.moduleId}"}`);
+	myRequest.end();
 	res.redirect('/');
 }
 
@@ -145,7 +141,8 @@ function updateModule(req, res) {
 	getModules(req.params.userId)
 		.then((modules) => {
 			res.render('module/update_module', {
-				modules: modules.map((m) => { return m.name; }),
+				modules: modules,
+				serverUrl: `http://${process.env.API_SERVER}/modules/update?doRedirect`,
 			});
 		})
 		.catch((e) => {
@@ -154,4 +151,4 @@ function updateModule(req, res) {
 		});
 }
 
-module.exports = {uploadModule, listAll, viewDetails, moduleDelete, deleteConfirm, search, updateModule, };
+module.exports = {uploadModule, listAll, viewDetails, moduleDelete, deleteConfirm, search, updateModule,};

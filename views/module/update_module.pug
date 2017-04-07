@@ -15,11 +15,23 @@ body
 				label Module You Want To Update
 				br
 				for module in modules
-					input(type="radio" id=module, name=module)
-					span=module
+					input(type="radio" id=module.name, name=module.id)
+					span=module.name
 					br
 				br
-				// TODO: Make all fields editable
+
+				.input-group
+					span.input-group-addon
+						label(for="module_name") Module Name
+					input.form-control(type="text", id="module_name", name="module_name")
+				br
+
+				.input-group
+					span.input-group-addon
+						label(for="module_desc") Module Description
+					input.form-control(type="text" , id="module_desc", name="module_desc")
+				br
+
 				.input-group
 					span.input-group-addon
 						label(for="code") File(s)

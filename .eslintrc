@@ -4,7 +4,9 @@
         "sourceType": "script"
     },
     "env": {
-        "node": true
+        "node": true,
+        "browser": true,
+        "es6": true
     },
     "rules": {
         "no-dupe-args": ["error"],

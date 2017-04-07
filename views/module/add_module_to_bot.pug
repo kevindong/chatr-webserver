@@ -1,27 +1,32 @@
 doctype html
 html(lang="en")
-    head
-        include ../../templates/head
-        title Add Modules
-        style
-            include style.css
-    body
-        include ../../templates/Header:Footer/header.pug
+	head
+		include ../../templates/head
+		title Add Modules
+		style
+			include style.css
+			include panel.css
+	body
+		include ../../templates/Header:Footer/header.pug
+		.panel.panel-default
+			.panel-heading
+				h1=botName
+			.panel-body
+				h1 <small>Current Modules</small>
+				ul.list-group
+					each bot in currentModules
+						li.list-group-item=bot
 
-        h1 Your Bot
+				h1 <small>Available Modules</small>
+				form(method="POST", action=serverUrl)
+					each bot in allModules
+						.input-group
+							span.input-group-addon
+								input(type="checkbox", value=bot, name=bot, id=bot, checked)
+								//currentModules.includes(bot))
+							label.form-control(for=bot)=bot
+						br
+					br
+					button.btn.btn-primary(type="submit") Submit
 
-        h3 Current Modules
-        ul
-            each bot in currentModules
-                li=bot
-
-        h3 Available Modules
-        form(method="POST", action=serverUrl)
-            each bot in allModules
-                input(type="checkbox", value=bot, name=bot, id=bot)
-                label(for=bot)=bot
-                br
-            br
-            button(type="submit") Submit
-
-        include ../../templates/Header:Footer/footer.pug
+		include ../../templates/Header:Footer/footer.pug
