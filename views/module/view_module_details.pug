@@ -3,6 +3,7 @@ head
 	include ../../templates/head
 	style
 		include ../../node_modules/highlightjs/styles/solarized-dark.css
+        link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css", integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7", crossorigin="anonymous")
 		include style.css
 		include panel.css
 body
@@ -22,6 +23,7 @@ body
 			h1 <small>Code</small>
 			pre
 				code=code
+            a(href="/modules/2/delete/confirm" class='btn btn-danger') Delete
 		//script
 		//	include ../../node_modules/highlightjs/highlight.pack.min.js
 		//	hljs.initHighlightingOnLoad()
