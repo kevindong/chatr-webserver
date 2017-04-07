@@ -1,0 +1,22 @@
+doctype html
+html(lang="en")
+	head
+		include ../../templates/head
+		title Delete Module
+		style
+			include style.css
+	body
+		include ../../templates/Header:Footer/header.pug
+		.container
+			.col-md-12
+				.panel.panel-danger
+					.panel-heading Delete Module '#{module.name}'?
+					.panel-body
+						h4 Module Description:
+						p #{module.description}
+						hr
+						h4 Module Code: 
+						p #{module.code}
+					.panel-footer
+						a(href=deleteLink class='btn btn-danger') Delete
+		include ../../templates/Header:Footer/footer.pug
