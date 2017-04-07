@@ -1,57 +1,64 @@
 doctype html
 html(lang='en')
 	head
-		meta(charset='UTF-8')
-		meta(http-equiv='X-UA-COMPATIBLE', content='IE=EDGE')
-		meta(name='viewport', content='width=device-width, initial-scale=1')
-		link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css", integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7", crossorigin="anonymous")
-		link(rel='stylesheet', type='text/css', href='/css/admin.css')
-		script(type='text/javascript', src="/js/lib/jquery.js")
-		script(type='text/javascript', src="/js/lib/bootstrap.js")
+		include ../../templates/head
 		title Chatr
+		style
+			include style.css
 	body
-		.jumbotron
-			.container
-				h1 Admin Console
+		include ../../templates/Header:Footer/header.pug
 		.container
-			.block
-				h2 Pending Modules
-				p
-					| This is a list of modules that have been submitted by developers and are waiting for approval before being public
-					| on the marketplace.
-				ul.list-group
-				each module in pendingModules
-					.list-group-item(href='#')
-						.row
-							.col-sm-6
-								h4.list-group-item-heading #{module.name}
-								p.list-group-item-text #{module.description}
-								p.list-group-item-text #{module.code}
-								form(action='https://chatr-apiserver-dev.herokuapp.com/modules/approve/'+module.id, method='post')
-									input.btn.btn-success(type='submit', value='Approve')
-								form(action='https://chatr-apiserver-dev.herokuapp.com/modules/deny/'+module.id, method='post')
-									input.btn.btn-danger(type='submit', value='Deny')
+			.col-md-12
+				.panel.panel-primary
+					.panel-heading Pending Modules
+					.panel-body
+						p This is a list of modules that have been submitted by developers and are waiting for approval before being public on the marketplace.
+						each module in pendingModules
+							.col-md-6
+								.panel.panel-default
+									.panel-heading #{module.name}
+									.panel-body
+										p #{module.description}
+										hr
+										p #{module.code}
+										hr
+										a(href='/modules/' + module.id) View More Details
+										form(action='https://chatr-apiserver-dev.herokuapp.com/modules/approve/'+module.id, method='post')
+											input.btn.btn-success(type='submit', value='Approve')
+										form(action='https://chatr-apiserver-dev.herokuapp.com/modules/deny/'+module.id, method='post')
+											input.btn.btn-danger(type='submit', value='Deny')
 		.spacer
 		.container
-			.block
-				h2 Banneded Modules
-				ul.list-group
-				each module in bannedModules
-					.list-group-item(href='#')
-						.row
-							.col-sm-6
-								h4.list-group-item-heading #{module.name}
-								p.list-group-item-text #{module.description}
-								p.list-group-item-text #{module.code}
+			.col-md-12
+				.panel.panel-primary
+					.panel-heading Banned Modules
+					.panel-body
+						p This is a list of modules that have been banned.
+						each module in bannedModules
+							.col-md-6
+								.panel.panel-default
+									.panel-heading #{module.name}
+									.panel-body
+										p #{module.description}
+										hr
+										p #{module.code}
+										hr
+										a(href='/modules/' + module.id) View More Details
 		.spacer
 		.container
-			.block
-				h2 Banned Users
-				ul.list-group
-				each user in bannedUsers
-					.list-group-item(href='#')
-						.row
-							.col-sm-6
-								h4.list-group-item-heading #{user.name}
-								p.list-group-item-text #{user.id}
+			.col-md-12
+				.panel.panel-primary
+					.panel-heading Banned Users
+					.panel-body
+						p This is a list of users that have been banned.
+						each module in bannedUsers
+							.col-md-6
+								.panel.panel-default
+									.panel-heading #{module.name}
+									.panel-body
+										p #{module.description}
+										hr
+										p #{module.code}
+										hr
+										a(href='/modules/' + module.id) View More Details
 		.spacer
