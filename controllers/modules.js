@@ -104,7 +104,7 @@ function deleteConfirm(req, res) {
 		const module = JSON.parse(body);
 		const test = `/modules/${module.id}/delete`;
 		console.log(test);
-		res.render('confirm_module_delete', {
+		res.render('module/confirm_module_delete', {
 			module: module,
 			deleteLink: test,
 		});
