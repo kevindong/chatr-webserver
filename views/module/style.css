@@ -8,3 +8,6 @@ body {
 	line-height: 1.5;
 	/*color: #333;*/
 }
+span, input {
+    margin: 10px;
+}
