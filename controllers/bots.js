@@ -29,7 +29,6 @@ function getBotsModules(id) {
 			if (error) {
 				reject(error);
 			}
-			console.log(JSON.parse(body));
 			resolve(JSON.parse(body));
 		});
 	});
@@ -45,15 +44,14 @@ function addModuleToBot(req, res) {
 			return req.params.userId;
 		})
 		.then(getBotsModules)
-		.then((modules) => { botModules = modules.map((e) => { return e.name; }); })
+		.then((modules) => { botModules = modules; })//botModules = modules.map((e) => { return e.name; }); })
 		.then(getAllModules)
 		.then((allModules) => {
 			res.render('module/add_module_to_bot', {
 				botName: email,
-				allModules: allModules.map((e) => {
-					return e.name;
-				}),
+				allModules: allModules,
 				currentModules: botModules,
+				userId: 1, // req.user.id
 				serverUrl: `http://${process.env.API_SERVER}`,
 			});
 		})

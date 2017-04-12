@@ -15,18 +15,20 @@ html(lang="en")
 				h1 <small>Current Modules</small>
 				ul.list-group
 					each bot in currentModules
-						li.list-group-item=bot
+						li.list-group-item=bot.name
 
 				h1 <small>Available Modules</small>
-				form(method="POST", action=serverUrl)
+				form(method="POST")
 					each bot in allModules
 						.input-group
 							span.input-group-addon
-								input(type="checkbox", value=bot, name=bot, id=bot, checked)
-								//currentModules.includes(bot))
-							label.form-control(for=bot)=bot
+								-const checked = currentModules.map(e => e.id).includes(bot.id);
+								input(type="checkbox", value=bot.name, name=bot.name, id=bot.id, checked=checked, data-was-checked=checked, data-user-id=userId)
+							label.form-control(for=bot.name)=bot.name
 						br
 					br
 					button.btn.btn-primary(type="submit") Submit
+		script
+			include ./add-module-to-bot.js
 
 		include ../../templates/Header:Footer/footer.pug
