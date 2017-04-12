@@ -3,14 +3,17 @@
 	margin: 5px auto;
 	position: relative;
 }
-.panel.panel-primary{
-    width: 60vw;
+
+.panel.panel-primary {
+	width: 60vw;
 	margin: 5px auto;
 	position: relative;
 }
-.panel.panel-primary h1{
-    font-size: 15px;
+
+.panel.panel-primary h1 {
+	font-size: 15px;
 }
+
 .panel-heading {
-    padding: 1px 15px;
+	padding: 1px 15px;
 }
