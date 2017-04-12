@@ -15,11 +15,17 @@ html(lang='en')
 						each module in modules
 							.col-md-6
 								.panel.panel-default
-									.panel-heading #{module.name}
+									.panel-heading=module.name
 									.panel-body
-										p #{module.description}
+										p=module.description
 										hr
-										p #{module.code}
+										pre
+											code=module.code
 										hr
-										a(href='/modules/' + module.id) View More Details
+										.btn-group
+											a.btn(href='/modules/' + module.id) View More Details
+											a.btn.toggle-module(data-user-id=userId, data-module-id=module.id) #{module.isAdded ? "Remove Module from Bot" : "Add Module to Bot"}
+		script!=set_api
+		script
+			include ./index.js
 		include ../../templates/Header:Footer/footer.pug

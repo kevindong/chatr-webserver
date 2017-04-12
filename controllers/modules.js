@@ -26,6 +26,8 @@ function uploadModule(req, res) {
 }
 
 function listAll(req, res) {
+	let modules = [];
+
 	new Promise((resolve, reject) => {
 		request(`http://${process.env.API_SERVER}/modules/get`, (error, response, body) => {
 			if (error) {
@@ -34,9 +36,26 @@ function listAll(req, res) {
 			resolve(JSON.parse(body));
 		});
 	}).then((data) => {
+		modules = data;
+		return new Promise((resolve, reject) => {
+			request(`http://${process.env.API_SERVER}/usermodules/${/*req.user.id*/ 1}/getModules`, (error, response, body) => {
+				if (error) {
+					reject(error);
+				}
+				resolve(JSON.parse(body));
+			});
+		});
+	}).then((botModules) => {
+		const modBotModules = botModules.map((e) => { return e.id; });
+		modules.forEach((module) => {
+			module.isAdded = modBotModules.includes(module.id);
+		});
+
 		res.render('module', {
 			title: 'Modules',
-			modules: data,
+			modules: modules,
+			set_api: `let server="${process.env.API_SERVER}";\n`,
+			userId: 1, // req.user.id
 		});
 	}).catch((e) => {
 		console.error(e);
@@ -151,4 +170,4 @@ function updateModule(req, res) {
 		});
 }
 
-module.exports = {uploadModule, listAll, viewDetails, moduleDelete, deleteConfirm, search, updateModule,};
+module.exports = {uploadModule, listAll, viewDetails, moduleDelete, deleteConfirm, search, updateModule, };

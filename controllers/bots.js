@@ -29,7 +29,7 @@ function getBotsModules(id) {
 			if (error) {
 				reject(error);
 			}
-			console.log(error, response, body);
+			console.log(JSON.parse(body));
 			resolve(JSON.parse(body));
 		});
 	});
@@ -39,10 +39,10 @@ function addModuleToBot(req, res) {
 	let email = '';
 	let botModules = [];
 
-	getEmailOfBotsUser(req.params.botId)
+	getEmailOfBotsUser(req.params.userId)
 		.then((e) => {
 			email = `${e}'s Bot`;
-			return req.params.botId;
+			return req.params.userId;
 		})
 		.then(getBotsModules)
 		.then((modules) => { botModules = modules.map((e) => { return e.name; }); })
