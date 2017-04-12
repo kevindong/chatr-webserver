@@ -1,25 +1,25 @@
 doctype html
 html(lang='en')
-	head
-		include ../../templates/head
-		title Chatr
-		style
-			include style.css
-	body
-		include ../../templates/Header:Footer/header.pug
-		.container
-			.col-md-12
-				.panel.panel-primary
-					.panel-heading Modules
-					.panel-body
-						each module in modules
-							.col-md-6
-								.panel.panel-default
-									.panel-heading #{module.name}
-									.panel-body
-										p #{module.description}
-										hr
-										p #{module.code}
-										hr
-										a(href='/modules/' + module.id) View More Details
-		include ../../templates/Header:Footer/footer.pug
+    head
+        include ../../templates/head
+        title Chatr
+        style
+            include style.css 
+    body
+        include ../../templates/Header:Footer/header.pug
+        .container
+            .col-md-12
+                .panel.panel-primary
+                    .panel-heading Modules
+                    .panel-body
+                        each module in modules
+                            .col-md-6
+                                .panel.panel-default
+                                    .panel-heading #{module.name}
+                                    .panel-body
+                                        p #{module.description}
+                                        hr
+                                        p #{module.code}
+                                        hr
+                                        a(href='/modules/' + module.id) View More Details
+        include ../../templates/Header:Footer/footer.pug
