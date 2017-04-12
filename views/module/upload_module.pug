@@ -8,7 +8,7 @@ html
 			include panel.css
 	body
 		include ../../templates/Header:Footer/header.pug
-		.panel.panel-default
+		.panel.panel-primary
 			.panel-heading
 				h1 Your Modules
 			.panel-body
@@ -16,7 +16,7 @@ html
 					each module in modules
 						a.list-group-item(href='/modules/' + module.id) #{module.name}
 		br
-		.panel.panel-default
+		.panel.panel-primary
 			.panel-heading
 				h1 Upload New Module
 			.panel-body

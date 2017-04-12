@@ -1,53 +1,53 @@
 head
-	title Search Modules
-	include ../../templates/head
-	style
-		include style.css
-		include panel.css
+    title Search Modules
+    include ../../templates/head
+    style
+        include style.css
+        include panel.css
 body
-	include ../../templates/Header:Footer/header.pug
-	.panel.panel-default
-		.panel-heading
-			h1 Search
-		.panel-body
-			form(id="search", onsubmit="return doSearch()")
-				div.input-group
-					span.input-group-addon Query
-					input.form-control(name="q", id="q", type="text")
-				br
+    include ../../templates/Header:Footer/header.pug
+    .panel.panel-primary
+        .panel-heading
+            h1 Search
+        .panel-body
+            form(id="search", onsubmit="return doSearch()")
+                div.input-group
+                    span.input-group-addon Query
+                    input.form-control(name="q", id="q", type="text")
+                br
 
-				div.input-group
-					span.input-group-addon
-						input(type="checkbox", name="name", id="name", checked="true")
-					label.form-control(for="name") Name
-				br
+                div.input-group
+                    span.input-group-addon
+                        input(type="checkbox", name="name", id="name", checked="true")
+                    label.form-control(for="name") Name
+                br
 
-				div.input-group
-					span.input-group-addon
-						input(name="description", id="description", type="checkbox", checked="true")
-					label.form-control(for="description") Description
-				br
+                div.input-group
+                    span.input-group-addon
+                        input(name="description", id="description", type="checkbox", checked="true")
+                    label.form-control(for="description") Description
+                br
 
-				div.input-group
-					span.input-group-addon
-						input(name="author", id="author", type="checkbox", checked="true")
-					label.form-control(for="author") Author
-				br
+                div.input-group
+                    span.input-group-addon
+                        input(name="author", id="author", type="checkbox", checked="true")
+                    label.form-control(for="author") Author
+                br
 
-				div.input-group
-					span.input-group-addon
-						input(name="code", id="code", type="checkbox", checked="true")
-					label.form-control(for="code") Code
-				br
+                div.input-group
+                    span.input-group-addon
+                        input(name="code", id="code", type="checkbox", checked="true")
+                    label.form-control(for="code") Code
+                br
 
-				button.btn.btn-primary(type="submit") Search
-	br
-	.panel.panel-default
-		.panel-heading
-			h1 Results
-		.panel-body
-			div.list-group(id="results")
-	script
-		!=set_api
-		include search.js
-	include ../../templates/Header:Footer/header.pug
+                button.btn.btn-primary(type="submit") Search
+    br
+    .panel.panel-primary
+        .panel-heading
+            h1 Results
+        .panel-body
+            div.list-group(id="results")
+    script
+        !=set_api
+        include search.js
+    include ../../templates/Header:Footer/footer.pug
