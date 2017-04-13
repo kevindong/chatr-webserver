@@ -1,15 +1,18 @@
-document.getElementsByTagName('form')[0].onsubmit = function updateBot() {
+document.getElementsByTagName('form')[0].onsubmit = function updateBot(e) {
+	e.preventDefault();
+
 	const boxes = Array.from(document.querySelectorAll('input[type=checkbox]'));
 
 	boxes.forEach((box) => {
-		if (box.checked !== box.getAttribute('data-was-checked')) {
+		console.log(box.checked, box.checked === true, box.getAttribute('data-was-checked'), box.getAttribute('data-was-checked') === '');
+		if ((box.checked === true || box.getAttribute('data-was-checked') === '') && !(box.checked === true && box.getAttribute('data-was-checked') === '')) {
 			const request = new XMLHttpRequest();
 			const data = {
-				moduleId: Number(event.target.getAttribute('id')),
-				userId: Number(event.target.getAttribute('data-user-id')),
+				moduleId: Number(box.getAttribute('id')),
+				userId: Number(box.getAttribute('data-user-id')),
 			};
 
-			request.open('POST', `http://${server}/usermodules/${box.checked ? 'enable' : 'disable'}`, false);
+			request.open('POST', `http://${server}/usermodules/${box.checked ? 'enable' : 'disable'}`, true);
 			request.setRequestHeader('Content-Type', 'application/json');
 			request.send(JSON.stringify(data));
 		}

@@ -52,7 +52,7 @@ function addModuleToBot(req, res) {
 				allModules: allModules,
 				currentModules: botModules,
 				userId: 1, // req.user.id
-				serverUrl: `http://${process.env.API_SERVER}`,
+				serverUrl: `let server = "${process.env.API_SERVER}";\n`,
 			});
 		})
 		.catch((e) => {
