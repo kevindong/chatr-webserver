@@ -79,8 +79,8 @@ function viewDetails(req, res) {
 
 		request(`http://${process.env.API_SERVER}/users/get/${module.userId}`, (error2, response2, body2) => {
 			if (error2) {
-				console.error(error);
-				res.status(500).send(error);
+				console.error(error2);
+				res.status(500).send(error2);
 			}
 
 			const author = JSON.parse(body2);

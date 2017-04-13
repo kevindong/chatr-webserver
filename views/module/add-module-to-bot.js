@@ -18,5 +18,8 @@ document.getElementsByTagName('form')[0].onsubmit = function updateBot(e) {
 		}
 	});
 
+	alert('Bot configuration saved! Redirecting you to the modules page');
+	window.location.href = '/modules';
+
 	return false;
 };
