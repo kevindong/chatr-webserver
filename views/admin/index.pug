@@ -14,7 +14,7 @@ html(lang='en')
 					.panel-body
 						p Send a message to all users.
 						form(action='https://chatr-apiserver-dev.herokuapp.com/bot/messageall/users', method='post')
-							input(type='text')
+							input(name='message' type='text')
 							input.btn.btn-success(type='submit', value='Send')
 		.container
 			.col-md-12
