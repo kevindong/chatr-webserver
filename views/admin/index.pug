@@ -40,57 +40,34 @@ html(lang='en')
 		.container
 			.col-md-12
 				.panel.panel-primary
-					.panel-heading Modules
-					table.table.table-bordered.table-striped
-						thead
-							tr
-								th id
-								th name
-								th mescription
-								th userID
-								th code
-								th active
-								th createdAt
-								th updatedAt
-								th isBanned
-						tbody
-							each module in modules
-								tr
-									td #{module.id}
-									td #{module.name}
-									td #{module.description}
-									td #{module.userId}
-									td #{module.code}
-									td #{module.active}
-									td #{module.createdAt}
-									td #{module.updatedAt}
-									td #{module.isBanned}
+					.panel-heading Banned Modules
+					.panel-body
+						p This is a list of modules that have been banned.
+						each module in bannedModules
+							.col-md-6
+								.panel.panel-default
+									.panel-heading #{module.name}
+									.panel-body
+										p #{module.description}
+										hr
+										p #{module.code}
+										hr
+										a(href='/modules/' + module.id) View More Details
 		.spacer
 		.container
 			.col-md-12
 				.panel.panel-primary
-					.panel-heading Users
-					table.table.table-bordered.table-striped
-						thead
-							tr
-								th id
-								th FBSenderId
-								th email
-								th createdAt
-								th updatedAt
-								th isAdmin
-								th isBanned
-								th Delete?
-						tbody
-							each user in users
-								tr
-									td #{user.id}
-									td #{user.FBSenderId}
-									td #{user.email}
-									td #{user.createdAt}
-									td #{user.updatedAt}
-									td #{user.isAdmin}
-									td #{user.isBanned}
-									td
-										a(href='users/' + user.id + '/' + user.email + '/delete' class='btn btn-danger') Delete
+					.panel-heading Banned Users
+					.panel-body
+						p This is a list of users that have been banned.
+						each module in bannedUsers
+							.col-md-6
+								.panel.panel-default
+									.panel-heading #{module.name}
+									.panel-body
+										p #{module.description}
+										hr
+										p #{module.code}
+										hr
+										a(href='/modules/' + module.id) View More Details
 		.spacer
