@@ -2,59 +2,44 @@ const https = require('https');
 const request = require('request');
 const User = require('../models/User');
 
-exports.index = function(req, res) {
-	(new Promise((resolve, reject) => {
-		console.log(`https://${process.env.API_SERVER}/modules/pending`);
-		https.get(`https://${process.env.API_SERVER}/modules/pending`, (res) => {
-			res.on('data', (d) => {
-				resolve(d);
-			});
-		}).on('error', (err) => {
-			reject(err);
-		});
-	})).then((pendingModules) => {
-		(new Promise((resolve, reject) => {
-			https.get(`https://${process.env.API_SERVER}/modules/banned`, (res) => {
-				res.on('data', (d) => {
-					resolve(d);
-				});
-			}).on('error', (err) => {
-				reject(err);
-			});
-		})).then((bannedModules) => {
-			(new Promise((resolve, reject) => {
-				https.get(`https://${process.env.API_SERVER}/users/banned`, (res) => {
-					res.on('data', (d) => {
-						resolve(d);
-					});
-				}).on('error', (err) => {
-					reject(err);
-					});
-			})).then((bannedUsers) => {
-				res.render('admin', {
-					title: 'Admin',
-					pendingModules: JSON.parse(pendingModules),
-					bannedModules: JSON.parse(bannedModules),
-					bannedUsers: JSON.parse(bannedUsers),
-				});
-			});
-		});
-	});
-};
-
-exports.users = function(req, res) {
+exports.index = function (req, res) {
 	new Promise((resolve, reject) => {
-		request(`http://${process.env.API_SERVER}/users/get`, (error, response, body) => {
+		request(`https://${process.env.API_SERVER}/modules/pending`, (error, response, body) => {
 			if (error) {
 				reject(error);
 			}
 			resolve(JSON.parse(body));
 		});
-	}).then((data) => {
-		console.log(data);
-		res.render('admin/manage_users', {
-			title: 'Manage Users',
-			users: data,
+	}).then((pendingModules) => {
+		new Promise((resolve, reject) => {
+			request(`http://${process.env.API_SERVER}/modules/get`, (error, response, body) => {
+				if (error) {
+					reject(error);
+				}
+				resolve(JSON.parse(body));
+			});
+		}).then((modules) => {
+			new Promise((resolve, reject) => {
+				request(`http://${process.env.API_SERVER}/users/get`, (error, response, body) => {
+					if (error) {
+						reject(error);
+					}
+					resolve(JSON.parse(body));
+				});
+			}).then((users) => {
+				res.render('admin', {
+					title: 'Admin',
+					pendingModules: pendingModules,
+					modules: modules,
+					users: users,
+				});
+			}).catch((e) => {
+				console.error(e);
+				res.status(500).send(e);
+			});
+		}).catch((e) => {
+			console.error(e);
+			res.status(500).send(e);
 		});
 	}).catch((e) => {
 		console.error(e);
@@ -62,7 +47,7 @@ exports.users = function(req, res) {
 	});
 };
 
-exports.adminAccountDelete = function(req, res, next) {
+exports.adminAccountDelete = function (req, res, next) {
 	const options = {
 		hostname: process.env.API_SERVER,
 		port: 443,
@@ -70,17 +55,17 @@ exports.adminAccountDelete = function(req, res, next) {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
-  		},
+		},
 	};
 	const request = https.request(options, (a) => {
-		console.log(`Status: ${  a.statusCode}`);
+		console.log(`Status: ${a.statusCode}`);
 		a.setEncoding('utf8');
 		a.on('data', (body) => {
-			console.log(`Body: ${  body}`);
+			console.log(`Body: ${body}`);
 		});
 	});
 	request.on('error', (e) => {
-		console.log(`problem with request: ${  e.message}`);
+		console.log(`problem with request: ${e.message}`);
 	});
 	request.write(`{"email": "${req.params.email}"}`);
 	request.end();

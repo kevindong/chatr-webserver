@@ -64,7 +64,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', HomeController.index);
 app.get('/admin', adminController.index);
 app.post('/admin', adminController.index);
-app.get('/admin/users', adminController.users);
 app.get('/admin/users/:userId/:email/delete', adminController.adminAccountDelete);
 app.get('/contact', contactController.contactGet);
 app.post('/contact', contactController.contactPost);
