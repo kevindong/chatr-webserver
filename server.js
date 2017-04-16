@@ -81,7 +81,7 @@ app.post('/reset/:token', userController.resetPost);
 app.get('/logout', userController.logout);
 app.get('/unlink/:provider', userController.ensureAuthenticated, userController.unlink);
 app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'user_location', ], }));
-app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/account', failureRedirect: '/login', }));
+app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/modules', failureRedirect: '/', }));
 app.get('/bots/:userId/add-module', botController.addModuleToBot);
 app.get('/modules/:userId/upload', modulesController.uploadModule);
 app.get('/modules/:userId/update', modulesController.updateModule);
