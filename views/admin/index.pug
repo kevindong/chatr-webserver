@@ -64,7 +64,15 @@ html(lang='en')
 									td #{module.active}
 									td #{module.createdAt}
 									td #{module.updatedAt}
-									td #{module.isBanned}
+									td
+										.checkbox
+											label
+												if module.isBanned
+													form(action='https://chatr-apiserver-dev.herokuapp.com/modules/unban/'+module.id, method='post')
+														input.btn.btn-success(type='submit', value='Allow')
+												else
+													form(action='https://chatr-apiserver-dev.herokuapp.com/modules/ban/'+module.id, method='post')
+														input.btn.btn-danger(type='submit', value='Ban')
 		.spacer
 		.container
 			.col-md-12
@@ -89,8 +97,20 @@ html(lang='en')
 									td #{user.email}
 									td #{user.createdAt}
 									td #{user.updatedAt}
-									td #{user.isAdmin}
-									td #{user.isBanned}
+									td
+										if user.isAdmin
+											form(action='https://chatr-apiserver-dev.herokuapp.com/users/revokeadmin/'+ user.id, method='post')
+												input.btn.btn-danger(type='submit', value='Revoke')
+										else
+											form(action='https://chatr-apiserver-dev.herokuapp.com/users/makeadmin/'+ user.id, method='post')
+												input.btn.btn-success(type='submit', value='Grant')
+									td
+										if user.isBanned
+											form(action='https://chatr-apiserver-dev.herokuapp.com/users/unban/'+ user.id, method='post')
+												input.btn.btn-success(type='submit', value='Allow')
+										else
+											form(action='https://chatr-apiserver-dev.herokuapp.com/users/ban/'+ user.id, method='post')
+												input.btn.btn-danger(type='submit', value='Ban')
 									td
 										a(href='users/' + user.id + '/' + user.email + '/delete' class='btn btn-danger') Delete
 		.spacer
