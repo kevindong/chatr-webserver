@@ -6,6 +6,9 @@ function doSearch() {
 		if (input.id !== 'author'){
              url += `${(i > 0 ? '&' : '') + input.id}=${input.value}`;  
         }
+        /*if(input.id == 'author'){
+            url += `${(i > 0 ? '&' : '') + input.id}=${input.value}`; 
+        }*/
         
 	});
 

@@ -1,31 +1,38 @@
+doctype html
+html(lang='en')
 head
-	title #{botName} | Chatr
-	include ../../templates/head
-	link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css", integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7", crossorigin="anonymous")
-	style
-		include ../../node_modules/highlightjs/styles/solarized-dark.css
-		include style.css
-		include panel.css
+    title #{botName} | Chatr
+    include ../../templates/head
+    link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css", integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7", crossorigin="anonymous")
+    style
+        include ../../node_modules/highlightjs/styles/solarized-dark.css
+        include style.css
+        include panel.css
 body
-	include ../../templates/Header:Footer/header.pug
-	div.panel.panel-default
-		div.panel-heading
-			h1 #{botName}
-		div.panel-body
-			h1 <small>#{botDesc}</small>
-		ul.list-group
-			li.list-group-item.active Details
-			li.list-group-item <strong>Author: </strong> #{author}
-			li.list-group-item <strong>Created At: </strong> #{created}
-			li.list-group-item <strong>Last Updated: </strong> #{lastUpdated}
-			li.list-group-item <strong>Number of Bots Using this Module:</strong> #{count}
-		div.panel-body
-			h1 <small>Code</small>
-			pre
-				code=code
-			a(href="/modules/2/delete/confirm" class='btn btn-danger') Delete
-		//script
-		//	include ../../node_modules/highlightjs/highlight.pack.min.js
-		//	hljs.initHighlightingOnLoad()
+    include ../../templates/Header:Footer/header.pug
+    div.panel.panel-default
+        div.panel-heading
+            h1 #{botName}
+        div.panel-body
+            h1 <small>#{botDesc}</small>
+        ul.list-group
+            li.list-group-item.active Details
+            li.list-group-item <strong>Author: </strong> #{author}
+            li.list-group-item <strong>Created At: </strong> #{created}
+            li.list-group-item <strong>Last Updated: </strong> #{lastUpdated}
+            li.list-group-item <strong>Number of Bots Using this Module:</strong> #{count}
+        div.panel-body
+            h1 <small>Code</small>
+            pre
+                code=code
+            
+            a(href="/modules/2/delete/confirm" class='btn btn-danger') Delete
+           
+        //script
+        //	include ../../node_modules/highlightjs/highlight.pack.min.js
+        //	hljs.initHighlightingOnLoad()
 
-	include ../../templates/Header:Footer/footer.pug
+script!=set_api
+        script
+            //include ./index.js
+        include ../../templates/Header:Footer/footer.pug
