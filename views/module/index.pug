@@ -1,25 +1,36 @@
 doctype html
 html(lang='en')
-	head
-		include ../../templates/head
-		title Chatr
-		style
-			include style.css
-	body
-		include ../../templates/Header:Footer/header.pug
-		.container
-			.col-md-12
-				.panel.panel-primary
-					.panel-heading Modules
-					.panel-body
-						each module in modules
-							.col-md-6
-								.panel.panel-default
-									.panel-heading #{module.name}
-									.panel-body
-										p #{module.description}
-										hr
-										p #{module.code}
-										hr
-										a(href='/modules/' + module.id) View More Details
-		include ../../templates/Header:Footer/footer.pug
+    head
+        include ../../templates/head
+        title Chatr
+        style
+            include style.css
+    body
+        include ../../templates/Header:Footer/header.pug
+        .container
+            .col-md-12
+                .panel.panel-primary
+                    .panel-heading Modules
+                    .panel-body
+                        each module in modules
+                            .col-md-6
+                                .panel.panel-default
+                                    .panel-heading=module.name
+                                    .panel-body
+                                        p=module.description
+                                        hr
+                                        pre
+                                            code=module.code
+                                        hr
+                                        .btn-group
+                                            a.btn(href='/modules/' + module.id class = "btn-primary spacer") View More Details
+                                            a.btn.toggle-module(data-user-id=userId, data-module-id=module.id class = "btn-primary spacer") #{module.isAdded ? "Remove Module from Bot" : "Add Module to Bot"}
+                                            
+                                            //connect in future to actually enable and disable
+                                            a.btn.toggle-module(class = "btn-primary spacer") #{module.isEnabled ? "Enable" : "Disable"}
+                                           
+                                       
+        script!=set_api
+        script
+            include ./index.js
+        include ../../templates/Header:Footer/footer.pug

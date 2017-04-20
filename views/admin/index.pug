@@ -13,8 +13,8 @@ html(lang='en')
 					.panel-heading Message All Users
 					.panel-body
 						p Send a message to all users.
-						form(action='https://chatr-apiserver-dev.herokuapp.com/bot/messageall/users', method='post')
-							input(type='text')
+						form(action='https://'+server+'/bot/messageall/users', method='post')
+							input(name='message' type='text')
 							input.btn.btn-success(type='submit', value='Send')
 		.container
 			.col-md-12
@@ -31,43 +31,86 @@ html(lang='en')
 										hr
 										p #{module.code}
 										hr
-										form(action='https://chatr-apiserver-dev.herokuapp.com/modules/approve/'+module.id, method='post')
+										form(action='https://'+server+'/modules/approve/'+module.id, method='post')
 											input.btn.btn-success(type='submit', value='Approve')
-										form(action='https://chatr-apiserver-dev.herokuapp.com/modules/deny/'+module.id, method='post')
+										form(action='https://'+server+'/modules/deny/'+module.id, method='post')
 											input.btn.btn-danger(type='submit', value='Deny')
 										a.btn(href='/modules/' + module.id) View More Details
 		.spacer
 		.container
 			.col-md-12
 				.panel.panel-primary
-					.panel-heading Banned Modules
-					.panel-body
-						p This is a list of modules that have been banned.
-						each module in bannedModules
-							.col-md-6
-								.panel.panel-default
-									.panel-heading #{module.name}
-									.panel-body
-										p #{module.description}
-										hr
-										p #{module.code}
-										hr
-										a(href='/modules/' + module.id) View More Details
+					.panel-heading Modules
+					table.table.table-bordered.table-striped
+						thead
+							tr
+								th id
+								th name
+								th mescription
+								th userID
+								th code
+								th active
+								th createdAt
+								th updatedAt
+								th isBanned
+						tbody
+							each module in modules
+								tr
+									td #{module.id}
+									td #{module.name}
+									td #{module.description}
+									td #{module.userId}
+									td #{module.code}
+									td #{module.active}
+									td #{module.createdAt}
+									td #{module.updatedAt}
+									td
+										.checkbox
+											label
+												if module.isBanned
+													form(action='https://'+server+'/modules/unban/'+module.id, method='post')
+														input.btn.btn-success(type='submit', value='Allow')
+												else
+													form(action='https://'+server+'/modules/ban/'+module.id, method='post')
+														input.btn.btn-danger(type='submit', value='Ban')
 		.spacer
 		.container
 			.col-md-12
 				.panel.panel-primary
-					.panel-heading Banned Users
-					.panel-body
-						p This is a list of users that have been banned.
-						each module in bannedUsers
-							.col-md-6
-								.panel.panel-default
-									.panel-heading #{module.name}
-									.panel-body
-										p #{module.description}
-										hr
-										p #{module.code}
-										hr
-										a(href='/modules/' + module.id) View More Details
+					.panel-heading Users
+					table.table.table-bordered.table-striped
+						thead
+							tr
+								th id
+								th FBSenderId
+								th email
+								th createdAt
+								th updatedAt
+								th isAdmin
+								th isBanned
+								th Delete?
+						tbody
+							each user in users
+								tr
+									td #{user.id}
+									td #{user.FBSenderId}
+									td #{user.email}
+									td #{user.createdAt}
+									td #{user.updatedAt}
+									td
+										if user.isAdmin
+											form(action='https://'+server+'/users/revokeadmin/'+ user.id, method='post')
+												input.btn.btn-danger(type='submit', value='Revoke')
+										else
+											form(action='https://'+server+'/users/makeadmin/'+ user.id, method='post')
+												input.btn.btn-success(type='submit', value='Grant')
+									td
+										if user.isBanned
+											form(action='https://'+server+'/users/unban/'+ user.id, method='post')
+												input.btn.btn-success(type='submit', value='Allow')
+										else
+											form(action='https://'+server+'/users/ban/'+ user.id, method='post')
+												input.btn.btn-danger(type='submit', value='Ban')
+									td
+										a(href='users/' + user.id + '/' + user.email + '/delete' class='btn btn-danger') Delete
 		.spacer

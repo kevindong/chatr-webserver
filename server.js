@@ -9,10 +9,8 @@ const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const dotenv = require('dotenv');
 const passport = require('passport');
-
 // Load environment variables from .env file
 dotenv.load();
-
 // Controllers
 const adminController = require('./controllers/admin');
 const HomeController = require('./controllers/home');
@@ -20,52 +18,54 @@ const userController = require('./controllers/user');
 const contactController = require('./controllers/contact');
 const botController = require('./controllers/bots');
 const modulesController = require('./controllers/modules');
-
 // Passport OAuth strategies
 require('./config/passport');
-
 const app = express();
-
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.use('/static', express.static('public'));
 app.get('/', (req, res) => {
-	res.render('index');
+    res.render('index');
 });
-
 app.set('port', process.env.PORT || 3000);
 app.use('*', (req, res, next) => {
-	if (process.env.NODE_ENV === 'production')		{
-		if (req.headers['x-forwarded-proto'] !== 'https') {
-		  return res.redirect(`https://${  req.headers.host  }${req.url}`);
-		} else {
-			return next();
-		}
-	} else {
-		return next();
-	}
+    if (process.env.NODE_ENV === 'production') {
+        if (req.headers['x-forwarded-proto'] !== 'https') {
+            return res.redirect(`https://${  req.headers.host  }${req.url}`);
+        }
+        else {
+            return next();
+        }
+    }
+    else {
+        return next();
+    }
 });
 app.use(compression());
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false, }));
+app.use(bodyParser.urlencoded({
+    extended: false
+, }));
 app.use(expressValidator());
 app.use(methodOverride('_method'));
-app.use(session({ secret: process.env.SESSION_SECRET, resave: true, saveUninitialized: true, }));
+app.use(session({
+    secret: process.env.SESSION_SECRET
+    , resave: true
+    , saveUninitialized: true
+, }));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use((req, res, next) => {
-	res.locals.user = req.user ? req.user.toJSON() : null;
-	next();
+    res.locals.user = req.user ? req.user.toJSON() : null;
+    next();
 });
 app.use(express.static(path.join(__dirname, 'public')));
-
 app.get('/', HomeController.index);
 app.get('/admin', adminController.index);
 app.post('/admin', adminController.index);
-app.get('/admin/users', adminController.users);
-app.get('/admin/users/:userId/:email/delete', adminController.adminAccountDelete);
+app.get('/admin/users/:userId/:email/delete',userController.ensureAuthenticated, adminController.adminAccountDelete);
 app.get('/contact', contactController.contactGet);
 app.post('/contact', contactController.contactPost);
 app.get('/account', userController.ensureAuthenticated, userController.accountGet);
@@ -81,27 +81,29 @@ app.get('/reset/:token', userController.resetGet);
 app.post('/reset/:token', userController.resetPost);
 app.get('/logout', userController.logout);
 app.get('/unlink/:provider', userController.ensureAuthenticated, userController.unlink);
-app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'user_location', ], }));
-app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/account', failureRedirect: '/login', }));
-app.get('/bots/:botId/add-module', botController.addModuleToBot);
-app.get('/modules/:userId/upload', modulesController.uploadModule);
-app.get('/modules/:userId/update', modulesController.updateModule);
+app.get('/auth/facebook', passport.authenticate('facebook', {
+    scope: ['email', 'user_location', ]
+, }));
+app.get('/auth/facebook/callback', passport.authenticate('facebook', {
+    successRedirect: '/modules'
+    , failureRedirect: '/'
+, }));
+app.get('/bots/:userId/add-module',userController.ensureAuthenticated, botController.addModuleToBot);
+app.get('/modules/:userId/upload', userController.ensureAuthenticated, modulesController.uploadModule);
+app.get('/modules/:userId/update',userController.ensureAuthenticated, modulesController.updateModule);
 app.get('/modules/search', modulesController.search);
 app.get('/modules/:moduleId', modulesController.viewDetails);
 app.get('/modules', modulesController.listAll);
 app.get('/modules/:moduleId/delete/confirm', modulesController.deleteConfirm);
 app.get('/modules/:moduleId/delete', modulesController.moduleDelete);
-
 // Production error handler
 if (app.get('env') === 'production') {
-	app.use((err, req, res, next) => {
-		console.error(err.stack);
-		res.sendStatus(err.status || 500);
-	});
+    app.use((err, req, res, next) => {
+        console.error(err.stack);
+        res.sendStatus(err.status || 500);
+    });
 }
-
 app.listen(app.get('port'), () => {
-	console.log(`Express server listening on port ${app.get('port')}`);
+    console.log(`Express server listening on port ${app.get('port')}`);
 });
-
 module.exports = app;

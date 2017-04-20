@@ -1,6 +1,7 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
+const request = require('request');
 
 
 const User = require('../models/User');
@@ -43,10 +44,14 @@ passport.use(new FacebookStrategy({
 	profileFields: ['name', 'email', 'gender', 'location',],
 	passReqToCallback: true,
 }, (req, accessToken, refreshToken, profile, done) => {
+	console.log("Starting login process now with email: " + profile._json.email);
 	if (req.user) {
+		console.log("In the if branch now.");
 		new User({facebook: profile.id,})
 			.fetch()
 			.then((user) => {
+				console.log("Fetched the user");
+				console.log(user);
 				if (user) {
 					req.flash('error', {msg: 'There is already an existing account linked with Facebook that belongs to you.',});
 					return done(null);
@@ -65,30 +70,51 @@ passport.use(new FacebookStrategy({
 					});
 			});
 	} else {
-		new User({facebook: profile.id,})
-			.fetch()
-			.then((user) => {
-				if (user) {
-					return done(null, user);
+		console.log("In the else branch now.");
+		new Promise((resolve, reject) => {
+			request(`https://${process.env.API_SERVER}/users/get/${profile._json.email}/email`, (error, response, body) => {
+				if (JSON.parse(body)['message'] === 'User Not Found') {
+					console.log("API says user does not exist.")
+					reject(error);
+				} else {
+					console.log("API says user exists.")
+					resolve();
 				}
-				new User({email: profile._json.email,})
-					.fetch()
-					.then((passedUser) => {
-						if (passedUser) {
-							req.flash('error', {msg: `${passedUser.get('email')  } is already associated with another account.`,});
-							return done();
-						}
-						const user = new User();
-						user.set('name', `${profile.name.givenName  } ${  profile.name.familyName}`);
-						user.set('email', profile._json.email);
-						user.set('gender', profile._json.gender);
-						user.set('location', profile._json.location && profile._json.location.name);
-						user.set('picture', `https://graph.facebook.com/${  profile.id  }/picture?type=large`);
-						user.set('facebook', profile.id);
-						user.save().then((user) => {
-							done(null, user);
-						});
-					});
 			});
+		})
+		.then(() => {
+			console.log("Starting user login process.")
+			new User({facebook: profile.id,})
+				.fetch()
+				.then((user) => {
+					if (user) {
+						return done(null, user);
+					}
+					new User({email: profile._json.email,})
+						.fetch()
+						.then((passedUser) => {
+							if (passedUser) {
+								req.flash('error', {msg: `${passedUser.get('email')  } is already associated with another account.`,});
+								return done();
+							}
+							const user = new User();
+							user.set('name', `${profile.name.givenName  } ${  profile.name.familyName}`);
+							user.set('email', profile._json.email);
+							user.set('gender', profile._json.gender);
+							user.set('location', profile._json.location && profile._json.location.name);
+							user.set('picture', `https://graph.facebook.com/${  profile.id  }/picture?type=large`);
+							user.set('facebook', profile.id);
+							user.save().then((user) => {
+								done(null, user);
+							});
+						});
+				});
+		})
+		.catch((error) => {
+			console.log('User is not registered on Facebook Messenger');
+			return done(null, false, {
+				message: 'You have not set up your account yet on Facebook Messenger. Please do that first before you sign up here'
+			});
+		})
 	}
 }));

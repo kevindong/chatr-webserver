@@ -2,59 +2,45 @@ const https = require('https');
 const request = require('request');
 const User = require('../models/User');
 
-exports.index = function(req, res) {
-	(new Promise((resolve, reject) => {
-		console.log(`https://${process.env.API_SERVER}/modules/pending`);
-		https.get(`https://${process.env.API_SERVER}/modules/pending`, (res) => {
-			res.on('data', (d) => {
-				resolve(d);
-			});
-		}).on('error', (err) => {
-			reject(err);
-		});
-	})).then((pendingModules) => {
-		(new Promise((resolve, reject) => {
-			https.get(`https://${process.env.API_SERVER}/modules/banned`, (res) => {
-				res.on('data', (d) => {
-					resolve(d);
-				});
-			}).on('error', (err) => {
-				reject(err);
-			});
-		})).then((bannedModules) => {
-			(new Promise((resolve, reject) => {
-				https.get(`https://${process.env.API_SERVER}/users/banned`, (res) => {
-					res.on('data', (d) => {
-						resolve(d);
-					});
-				}).on('error', (err) => {
-					reject(err);
-					});
-			})).then((bannedUsers) => {
-				res.render('admin', {
-					title: 'Admin',
-					pendingModules: JSON.parse(pendingModules),
-					bannedModules: JSON.parse(bannedModules),
-					bannedUsers: JSON.parse(bannedUsers),
-				});
-			});
-		});
-	});
-};
-
-exports.users = function(req, res) {
+exports.index = function (req, res) {
 	new Promise((resolve, reject) => {
-		request(`http://${process.env.API_SERVER}/users/get`, (error, response, body) => {
+		request(`https://${process.env.API_SERVER}/modules/pending`, (error, response, body) => {
 			if (error) {
 				reject(error);
 			}
 			resolve(JSON.parse(body));
 		});
-	}).then((data) => {
-		console.log(data);
-		res.render('admin/manage_users', {
-			title: 'Manage Users',
-			users: data,
+	}).then((pendingModules) => {
+		new Promise((resolve, reject) => {
+			request(`http://${process.env.API_SERVER}/modules/get`, (error, response, body) => {
+				if (error) {
+					reject(error);
+				}
+				resolve(JSON.parse(body));
+			});
+		}).then((modules) => {
+			new Promise((resolve, reject) => {
+				request(`http://${process.env.API_SERVER}/users/get`, (error, response, body) => {
+					if (error) {
+						reject(error);
+					}
+					resolve(JSON.parse(body));
+				});
+			}).then((users) => {
+				res.render('admin', {
+					title: 'Admin',
+					pendingModules: pendingModules,
+					modules: modules,
+					users: users,
+					server: `${process.env.API_SERVER}`,
+				});
+			}).catch((e) => {
+				console.error(e);
+				res.status(500).send(e);
+			});
+		}).catch((e) => {
+			console.error(e);
+			res.status(500).send(e);
 		});
 	}).catch((e) => {
 		console.error(e);

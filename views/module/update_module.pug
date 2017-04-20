@@ -7,7 +7,7 @@ head
 		include panel.css
 body
 	include ../../templates/Header:Footer/header.pug
-	.panel.panel-default
+	.panel.panel-primary
 		.panel-heading
 			h1 Update Module
 		.panel-body
@@ -15,7 +15,7 @@ body
 				label Module You Want To Update
 				br
 				for module in modules
-					input(type="radio" id=module.name, name=module.id)
+					input(type="radio" id=module.name, name='module-id', value=module.id)
 					span=module.name
 					br
 				br

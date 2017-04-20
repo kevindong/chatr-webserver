@@ -1,7 +1,15 @@
 function doSearch() {
 	let url = `https://${server}/modules/search?`;
+    
+    //get the names 
 	document.querySelectorAll('input').forEach((input, i) => {
-		if (input.id !== 'author') { url += `${(i > 0 ? '&' : '') + input.id}=${input.value}`; }
+		if (input.id !== 'author'){
+             url += `${(i > 0 ? '&' : '') + input.id}=${input.value}`;  
+        }
+        /*if(input.id == 'author'){
+            url += `${(i > 0 ? '&' : '') + input.id}=${input.value}`; 
+        }*/
+        
 	});
 
 	const request = new XMLHttpRequest();
@@ -17,6 +25,8 @@ function doSearch() {
 				link.className = 'list-group-item';
 				link.setAttribute('href', `/modules/${e.id}`);
 				link.innerText = e.name;
+                
+                // this displays to html 
 				document.getElementById('results').appendChild(link);
 			});
 		} else {

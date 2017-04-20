@@ -6,7 +6,7 @@ head
 		include panel.css
 body
 	include ../../templates/Header:Footer/header.pug
-	.panel.panel-default
+	.panel.panel-primary
 		.panel-heading
 			h1 Search
 		.panel-body
@@ -42,7 +42,7 @@ body
 
 				button.btn.btn-primary(type="submit") Search
 	br
-	.panel.panel-default
+	.panel.panel-primary
 		.panel-heading
 			h1 Results
 		.panel-body
@@ -50,4 +50,4 @@ body
 	script
 		!=set_api
 		include search.js
-	include ../../templates/Header:Footer/header.pug
+	include ../../templates/Header:Footer/footer.pug

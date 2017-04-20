@@ -5,6 +5,7 @@ const nodemailer = require('nodemailer');
 const passport = require('passport');
 const User = require('../models/User');
 const https = require('https');
+const request = require('request');
 
 /**
  * Login required middleware
@@ -13,7 +14,7 @@ exports.ensureAuthenticated = function(req, res, next) {
 	if (req.isAuthenticated()) {
 		next();
 	} else {
-		res.redirect('/login');
+		res.redirect('/');
 	}
 };
 

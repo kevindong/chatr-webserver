@@ -1,11 +1,14 @@
 doctype html
 html
     head
+        include ../templates/head
         title Chatr
         meta(charset='utf-8')
         meta(name='viewport', content='width=device-width, initial-scale=1, user-scalable=no')
         link(rel='stylesheet', href='/css/main.css')
+        link(rel='shortcut icon' href='/favicon.ico' type='image/x-icon')
     body
+        include ../templates/Header:Footer/headerh.pug
         #containContent
             header#header
                 img.size(src='/images/Logo1.png')
@@ -17,3 +20,5 @@ html
                 .logo
                     a(href='/auth/facebook')
                         span.icon.fa-facebook-square
+            #footer
+                include ../templates/Header:Footer/footerh.pug
