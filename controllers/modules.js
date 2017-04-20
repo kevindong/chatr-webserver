@@ -46,17 +46,28 @@ function listAll(req, res) {
 			});
 		});
 	}).then((botModules) => {
-		const modBotModules = botModules.map((e) => { return e.id; });
-		modules.forEach((module) => {
-			module.isAdded = modBotModules.includes(module.id);
-		});
+		// If there are modules
+		if (botModules.length > 0) {
+			const modBotModules = botModules.map((e) => { return e.id; });
+			modules.forEach((module) => {
+				module.isAdded = modBotModules.includes(module.id);
+			});
 
-		res.render('module', {
-			title: 'Modules',
-			modules: modules,
-			set_api: `let server="${process.env.API_SERVER}";\n`,
-			userId: 1, // req.user.id
-		});
+			res.render('module', {
+				title: 'Modules',
+				modules: modules,
+				set_api: `let server="${process.env.API_SERVER}";\n`,
+				userId: 1, // req.user.id
+			});
+		//Else, there are no modules, so just render empty
+		} else {
+			res.render('module', {
+				title: 'Modules',
+				modules: [],
+				set_api: `let server="${process.env.API_SERVER}";\n`,
+				userId: 1, // req.user.id
+			});
+		}
 	}).catch((e) => {
 		console.error(e);
 		res.status(500).send(e);
