@@ -13,10 +13,10 @@ function getModules(userId) {
 }
 
 function uploadModule(req, res) {
-	getModules(req.params.userId).then((modules) => {
+	getModules(req.user.id).then((modules) => {
 		res.render('module/upload_module', {
 			modules: modules,
-			userId: req.params.userId,
+			userId: req.user.id,
 			serverUrl: `http://${process.env.API_SERVER}/modules/upload?doRedirect`,
 		});
 	}).catch((e) => {
