@@ -16,7 +16,6 @@ const adminController = require('./controllers/admin');
 const HomeController = require('./controllers/home');
 const userController = require('./controllers/user');
 const contactController = require('./controllers/contact');
-const botController = require('./controllers/bots');
 const modulesController = require('./controllers/modules');
 // Passport OAuth strategies
 require('./config/passport');
@@ -88,7 +87,6 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', {
     successRedirect: '/modules'
     , failureRedirect: '/'
 , }));
-app.get('/bots/:userId/add-module',userController.ensureAuthenticated, botController.addModuleToBot);
 app.get('/modules/:userId/upload', userController.ensureAuthenticated, modulesController.uploadModule);
 app.get('/modules/:userId/update',userController.ensureAuthenticated, modulesController.updateModule);
 app.get('/modules/search', modulesController.search);
