@@ -44,10 +44,14 @@ passport.use(new FacebookStrategy({
 	profileFields: ['name', 'email', 'gender', 'location',],
 	passReqToCallback: true,
 }, (req, accessToken, refreshToken, profile, done) => {
+	console.log("Starting login process now with email: " + profile._json.email);
 	if (req.user) {
+		console.log("In the if branch now.");
 		new User({facebook: profile.id,})
 			.fetch()
 			.then((user) => {
+				console.log("Fetched the user");
+				console.log(user);
 				if (user) {
 					req.flash('error', {msg: 'There is already an existing account linked with Facebook that belongs to you.',});
 					return done(null);
@@ -66,16 +70,20 @@ passport.use(new FacebookStrategy({
 					});
 			});
 	} else {
+		console.log("In the else branch now.");
 		new Promise((resolve, reject) => {
 			request(`https://${process.env.API_SERVER}/users/get/${profile._json.email}/email`, (error, response, body) => {
 				if (JSON.parse(body)['message'] === 'User Not Found') {
+					console.log("API says user does not exist.")
 					reject(error);
 				} else {
+					console.log("API says user exists.")
 					resolve();
 				}
 			});
 		})
 		.then(() => {
+			console.log("Starting user login process.")
 			new User({facebook: profile.id,})
 				.fetch()
 				.then((user) => {
