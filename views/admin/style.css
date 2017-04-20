@@ -7,11 +7,9 @@ body {
 	/*flex-direction: column;*/
 	/*flex-wrap: nowrap;*/
 	line-height: 1.5;
+    font-size: 14px;
 	/*color: #333;*/
 }
-
-input {
-	display: inline-block;
-	float: left;
-	margin-right: 8px;
+span, input {
+    margin: 10px;
 }

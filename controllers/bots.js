@@ -51,7 +51,7 @@ function addModuleToBot(req, res) {
 				botName: email,
 				allModules: allModules,
 				currentModules: botModules,
-				userId: 1, // req.user.id
+				userId: req.user.id, // req.user.id
 				serverUrl: `let server = "${process.env.API_SERVER}";\n`,
 			});
 		})
