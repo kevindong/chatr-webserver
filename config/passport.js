@@ -71,7 +71,7 @@ passport.use(new FacebookStrategy({
 				if (JSON.parse(body)['message'] === 'User Not Found') {
 					reject(error);
 				} else {
-					resolve(passedUser);
+					resolve();
 				}
 			});
 		})
