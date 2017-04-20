@@ -32,15 +32,19 @@ function doSearch() {
 		} else {
 			// We reached our target server, but it returned an error
 			const li = document.createElement('li');
-			li.innerHTML = 'There was an error!';
+			li.innerHTML = 'There was an error! (1)';
+			console.error(request);
 			document.getElementById('results').appendChild(li);
 		}
 	};
 
-	request.onerror = function() {
+	request.onerror = function(e) {
 		// There was a connection error of some sort
 		const li = document.createElement('li');
-		li.innerHTML = 'There was an error!';
+		console.error(request);
+		li.innerHTML = 'There was an error! (2)';
+		console.error(e);
+		console.error(request.statusText);
 		document.getElementById('results').appendChild(li);
 	};
 
