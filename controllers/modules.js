@@ -1,5 +1,6 @@
 'use strict';
 const request = require('request');
+const rp = require('request-promise');
 
 function getModules(userId) {
 	return new Promise((resolve, reject) => {
@@ -13,16 +14,26 @@ function getModules(userId) {
 }
 
 function uploadModule(req, res) {
-	getModules(req.user.id).then((modules) => {
-		res.render('module/upload_module', {
-			modules: modules,
-			userId: req.user.id,
-			serverUrl: `http://${process.env.API_SERVER}/modules/upload?doRedirect`,
+	console.log(req.user);
+	//First get the API server's info on this user.
+	rp.get(`https://${process.env.API_SERVER}/users/get/${req.user.email}/email`)
+		.then((response) => {
+			const user = JSON.parse(response);
+			console.log(response);
+			return user;
+		})
+		.then((user) => {
+			getModules(req.user.id).then((modules) => {
+				res.render('module/upload_module', {
+					modules: modules,
+					userId: req.user.id,
+					serverUrl: `http://${process.env.API_SERVER}/modules/upload?doRedirect`,
+				});
+			}).catch((e) => {
+				console.error(e);
+				res.status(500).send(e);
+			});
 		});
-	}).catch((e) => {
-		console.error(e);
-		res.status(500).send(e);
-	});
 }
 
 function listAll(req, res) {
