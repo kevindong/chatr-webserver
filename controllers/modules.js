@@ -27,7 +27,7 @@ function uploadModule(req, res) {
 
 function listAll(req, res) {
 	let modules = [];
-
+	const user = (req.user.id) ? req.user.id : 1;
 	new Promise((resolve, reject) => {
 		request(`http://${process.env.API_SERVER}/modules/get`, (error, response, body) => {
 			if (error) {
@@ -56,7 +56,7 @@ function listAll(req, res) {
 				title: 'Modules',
 				modules: modules,
 				set_api: `let server="${process.env.API_SERVER}";\n`,
-				userId: 1, // req.user.id
+				userId: user,
 			});
 		//If there are no modules, just render blank list
 		} else {
@@ -64,7 +64,7 @@ function listAll(req, res) {
 				title: 'Modules',
 				modules: [],
 				set_api: `let server="${process.env.API_SERVER}";\n`,
-				userId: 1, // req.user.id
+				userId: user, // req.user.id
 			});
 		}
 	}).catch((e) => {
