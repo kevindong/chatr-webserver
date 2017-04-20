@@ -15,6 +15,7 @@ function getModules(userId) {
 
 function uploadModule(req, res) {
 	console.log(req.user.email);
+	console.log(req.user);
 	//First get the API server's info on this user.
 	rp.get(`https://${process.env.API_SERVER}/users/get/${req.user.email}/email`)
 		.then((response) => {
