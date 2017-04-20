@@ -14,10 +14,12 @@ function getModules(userId) {
 }
 
 function uploadModule(req, res) {
+	let user = JSON.parse(JSON.stringify(req.user));
+	console.log(`id:${user.id}, email:${user.email}`);
 	console.log(`id:${req.user.id}, email:${req.user['email']}, gender:${req.user['gender']}`);
 	console.log(JSON.stringify(req.user));
 	console.log(req.user);
-	
+
 	//First get the API server's info on this user.
 	rp.get(`https://${process.env.API_SERVER}/users/get/${req.user.email}/email`)
 		.then((response) => {
