@@ -32,6 +32,7 @@ exports.index = function (req, res) {
 					pendingModules: pendingModules,
 					modules: modules,
 					users: users,
+					server: `${process.env.API_SERVER}`,
 				});
 			}).catch((e) => {
 				console.error(e);
