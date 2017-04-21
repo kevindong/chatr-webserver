@@ -24,10 +24,10 @@ function uploadModule(req, res) {
 			return user;
 		})
 		.then((user) => {
-			getModules(req.user.id).then((modules) => {
+			getModules(user.id).then((modules) => {
 				res.render('module/upload_module', {
 					modules: modules,
-					userId: req.user.id,
+					userId: user.id,
 					serverUrl: `http://${process.env.API_SERVER}/modules/upload?doRedirect`,
 				});
 			}).catch((e) => {
