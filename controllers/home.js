@@ -10,3 +10,7 @@ exports.index = function(req, res) {
 		});
 	}
 };
+
+exports.getting_started = (req, res) => {
+	res.render('getting_started');
+};

@@ -85,7 +85,7 @@ app.get('/auth/facebook', passport.authenticate('facebook', {
 , }));
 app.get('/auth/facebook/callback', passport.authenticate('facebook', {
     successRedirect: '/modules'
-    , failureRedirect: '/'
+    , failureRedirect: '/getting-started'
 , }));
 app.get('/modules/:userId/upload', userController.ensureAuthenticated, modulesController.uploadModule);
 app.get('/modules/:userId/update',userController.ensureAuthenticated, modulesController.updateModule);
@@ -94,6 +94,7 @@ app.get('/modules/:moduleId', modulesController.viewDetails);
 app.get('/modules', userController.ensureAuthenticated, modulesController.listAll);
 app.get('/modules/:moduleId/delete/confirm', modulesController.deleteConfirm);
 app.get('/modules/:moduleId/delete', modulesController.moduleDelete);
+app.get('/getting-started', HomeController.getting_started);
 // Production error handler
 if (app.get('env') === 'production') {
     app.use((err, req, res, next) => {
