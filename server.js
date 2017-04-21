@@ -91,7 +91,7 @@ app.get('/modules/:userId/upload', userController.ensureAuthenticated, modulesCo
 app.get('/modules/:userId/update',userController.ensureAuthenticated, modulesController.updateModule);
 app.get('/modules/search', modulesController.search);
 app.get('/modules/:moduleId', modulesController.viewDetails);
-app.get('/modules', modulesController.listAll);
+app.get('/modules', userController.ensureAuthenticated, modulesController.listAll);
 app.get('/modules/:moduleId/delete/confirm', modulesController.deleteConfirm);
 app.get('/modules/:moduleId/delete', modulesController.moduleDelete);
 // Production error handler

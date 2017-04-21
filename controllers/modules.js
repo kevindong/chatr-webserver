@@ -37,50 +37,57 @@ function uploadModule(req, res) {
 
 function listAll(req, res) {
 	let modules = [];
-	const user = (req.user.id) ? req.user.id : 1;
-	new Promise((resolve, reject) => {
-		request(`http://${process.env.API_SERVER}/modules/get`, (error, response, body) => {
-			if (error) {
-				reject(error);
-			}
-			resolve(JSON.parse(body));
-		});
-	}).then((data) => {
-		modules = data;
-		return new Promise((resolve, reject) => {
-			request(`http://${process.env.API_SERVER}/usermodules/${user}/getModules`, (error, response, body) => {
-				if (error) {
-					reject(error);
-				}
-				resolve(JSON.parse(body));
-			});
-		});
-	}).then((botModules) => {
-		if (botModules.length > 0) {
-			const modBotModules = botModules.map((e) => { return e.id; });
-			modules.forEach((module) => {
-				module.isAdded = modBotModules.includes(module.id);
-			});
+	const userObj = JSON.parse(JSON.stringify(req.user));
+	let apiUser = {};
+	rp.get(`https://${process.env.API_SERVER}/users/get/${userObj.email}/email`)
+		.then((response) => {
+			apiUser = JSON.parse(response);
+		}).then(() => {
+			new Promise((resolve, reject) => {
+				request(`http://${process.env.API_SERVER}/modules/get`, (error, response, body) => {
+					if (error) {
+						reject(error);
+					}
+					resolve(JSON.parse(body));
+				});
+			}).then((data) => {
+				modules = data;
+				return new Promise((resolve, reject) => {
+					request(`http://${process.env.API_SERVER}/usermodules/${apiUser.id}/getModules`, (error, response, body) => {
+						if (error) {
+							reject(error);
+						}
+						resolve(JSON.parse(body));
+					});
+				});
+			}).then((botModules) => {
+				if (botModules.length > 0) {
+					const modBotModules = botModules.map((e) => { return e.id; });
+					modules.forEach((module) => {
+						module.isAdded = modBotModules.includes(module.id);
+					});
 
-			res.render('module', {
-				title: 'Modules',
-				modules: modules,
-				set_api: `let server="${process.env.API_SERVER}";\n`,
-				userId: user,
+					res.render('module', {
+						title: 'Modules',
+						modules: modules,
+						set_api: `let server="${process.env.API_SERVER}";\n`,
+						userId: apiUser.id,
+					});
+				//If there are no modules, just render blank list
+				} else {
+					res.render('module', {
+						title: 'Modules',
+						modules: [],
+						set_api: `let server="${process.env.API_SERVER}";\n`,
+						userId: apiUser.id, // req.user.id
+					});
+				}
+			}).catch((e) => {
+				console.error(e);
+				res.status(500).send(e);
 			});
-		//If there are no modules, just render blank list
-		} else {
-			res.render('module', {
-				title: 'Modules',
-				modules: [],
-				set_api: `let server="${process.env.API_SERVER}";\n`,
-				userId: user, // req.user.id
-			});
-		}
-	}).catch((e) => {
-		console.error(e);
-		res.status(500).send(e);
-	});
+		});
+	
 }
 
 function viewDetails(req, res) {
