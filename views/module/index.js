@@ -7,7 +7,7 @@ Array.from(document.getElementsByClassName('toggle-module')).forEach((btn) => {
 			userId: Number(event.target.getAttribute('data-user-id')),
 		};
 
-		request.open('POST', `http://${server}/usermodules/${isEnabled ? 'enable' : 'disable'}`, true);
+		request.open('POST', `https://${server}/usermodules/${isEnabled ? 'enable' : 'disable'}`, true);
 		request.setRequestHeader('Content-Type', 'application/json');
 
 		request.onload = function() {
