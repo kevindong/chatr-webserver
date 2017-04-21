@@ -15,12 +15,10 @@ function getModules(userId) {
 
 function uploadModule(req, res) {
 	const userObj = JSON.parse(JSON.stringify(req.user));
-
 	//First get the API server's info on this user.
 	rp.get(`https://${process.env.API_SERVER}/users/get/${userObj.email}/email`)
 		.then((response) => {
 			const user = JSON.parse(response);
-			console.log(response);
 			return user;
 		})
 		.then((user) => {
@@ -50,7 +48,7 @@ function listAll(req, res) {
 	}).then((data) => {
 		modules = data;
 		return new Promise((resolve, reject) => {
-			request(`http://${process.env.API_SERVER}/usermodules/${/*req.user.id*/ 1}/getModules`, (error, response, body) => {
+			request(`http://${process.env.API_SERVER}/usermodules/${user}/getModules`, (error, response, body) => {
 				if (error) {
 					reject(error);
 				}
