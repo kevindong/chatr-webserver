@@ -22,7 +22,7 @@ html(lang='en')
                                         pre
                                             code=module.code
                                         hr
-                                        .btn-group
+                                        .btn-group(style="display: flex; justify-content: center;")
                                             a.btn(href='/modules/' + module.id class = "btn-primary spacer") View More Details
                                             a.btn.toggle-module(data-user-id=userId, data-module-id=module.id class = "btn-primary spacer") #{module.isAdded ? "Remove Module from Bot" : "Add Module to Bot"}
                                             
