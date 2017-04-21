@@ -1,33 +1,33 @@
 doctype html
 html(lang='en')
-	head
-		include ../templates/head
-		title Chatr
-		link(href='style.css')
-		style.
-			body {
-				margin: 0 auto;
-				padding: 50px 0 25px 0;
-			}
-	body
-		include ../templates/Header:Footer/header.pug
-		.container
-			br
-			.col-md-8.col-md-offset-2
-				h2
-					.panel.panel-default
-						.panel-heading Getting Started with Chatr
-						h3
-							.panel-body
-									ol
-										li Go to 
-											a(href='https://www.facebook.com/Chatr-405722646450659/') the Chatr Facebook page.
-										br
-										li Send a message to the bot with your email address.
-										br
-										li Log in by clicking on the Facebook icon on the Chatr homepage.
-										br
-										li Enable some modules.
-										br
-										li Use Chatr!
-		include ../templates/Header:Footer/footer.pug
+    head
+        include ../templates/head
+        title Chatr
+        include style.css
+        style.
+            body {
+                margin: 0 auto;
+                padding: 50px 0 25px 0;
+            }
+    body
+        include ../templates/Header:Footer/header.pug
+        .container
+            br
+            .col-md-8.col-md-offset-2
+                h2
+                    .panel.panel-default
+                        .panel-heading Getting Started with Chatr
+                        h3
+                            .panel-body
+                                    ol
+                                        li Go to 
+                                            a(href='https://www.facebook.com/Chatr-405722646450659/') the Chatr Facebook page.
+                                        br
+                                        li Send a message to the bot with your email address.
+                                        br
+                                        li Log in by clicking on the Facebook icon on the Chatr homepage.
+                                        br
+                                        li Enable some modules.
+                                        br
+                                        li Use Chatr!
+        include ../templates/Header:Footer/footer.pug
