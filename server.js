@@ -89,7 +89,7 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', {
 , }));
 app.get('/modules/:userId/upload', userController.ensureAuthenticated, modulesController.uploadModule);
 app.get('/modules/:userId/update',userController.ensureAuthenticated, modulesController.updateModule);
-app.get('/modules/search', modulesController.search);
+app.get('/modules/search', userController.ensureAuthenticated, modulesController.search);
 app.get('/modules/:moduleId', modulesController.viewDetails);
 app.get('/modules', userController.ensureAuthenticated, modulesController.listAll);
 app.get('/modules/:moduleId/delete/confirm', modulesController.deleteConfirm);
