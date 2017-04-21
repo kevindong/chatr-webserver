@@ -1,8 +1,11 @@
 @import url(font-awesome.min.css);
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300italic,600italic,300,600");
 body {
-	margin: 0 auto;
+	/*margin: 0 auto;
 	padding: 100px 0 25px 0;
+    */
+    margin: 0 auto;
+    padding: 50px 0 25px 0;
     background-color: #f4f0ea;
 	/*max-width: 50em;*/
 	/*display: flex;*/
