@@ -27,6 +27,7 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 app.set('port', process.env.PORT || 3000);
+/*
 app.use('*', (req, res, next) => {
     if (process.env.NODE_ENV === 'production') {
         if (req.headers['x-forwarded-proto'] !== 'https') {
@@ -40,6 +41,7 @@ app.use('*', (req, res, next) => {
         return next();
     }
 });
+*/
 app.use(compression());
 app.use(logger('dev'));
 app.use(bodyParser.json());
