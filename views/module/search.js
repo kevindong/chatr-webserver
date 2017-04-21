@@ -1,7 +1,7 @@
 function doSearch() {
 	let url = `http://${server}/modules/search?`;
 	document.querySelectorAll('input').forEach((input, i) => {
-		if (input.id !== 'author') { url += `${(i > 0 ? '&' : '') + input.id}=${input.id === 'q' ? input.value : input.checked}`; }
+		url += `${(i > 0 ? '&' : '') + input.id}=${input.id === 'q' ? input.value : input.checked}`;
 	});
 
 	const request = new XMLHttpRequest();
