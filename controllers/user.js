@@ -19,6 +19,18 @@ exports.ensureAuthenticated = function(req, res, next) {
 };
 
 /**
+ * Redirects to /modules if the user
+ * is already logged in
+ */
+exports.noDoubleLogin = function(req, res, next) {
+	if (req.isAuthenticated()) {
+		res.redirect('/modules');
+	} else {
+		next();
+	}
+};
+
+/**
  * GET /login
  */
 exports.loginGet = function(req, res) {
