@@ -17,3 +17,9 @@
 .panel-heading {
 	padding: 1px 15px;
 }
+footer {
+    height: 2px;
+    float: center !important;
+    text-align: center !important;
+    padding-top: 14vh;
+} 
