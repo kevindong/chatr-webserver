@@ -122,6 +122,7 @@ function viewDetails(req, res) {
 					count: count,
 					lastUpdated: module.updatedAt,
 					code: module.code,
+					id: module.id,
 				});
 			});
 		});
@@ -152,28 +153,13 @@ function deleteConfirm(req, res) {
 }
 
 function moduleDelete(req, res) {
-	const options = {
-		hostname: process.env.API_SERVER,
-		port: 443,
-		path: '/modules/delete',
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-	};
-	const myRequest = request(options, (a) => {
-		console.log(`Status: ${a.statusCode}`);
-		a.setEncoding('utf8');
-		a.on('data', (body) => {
-			console.log(`Body: ${body}`);
-		});
+	request(`https://${process.env.API_SERVER}/modules/delete/${req.params.moduleId}`, (error, response, body) => {
+		if (error) {
+			console.error(error);
+			res.status(500).send(error);
+		}
 	});
-	myRequest.on('error', (e) => {
-		console.log(`problem with request: ${e.message}`);
-	});
-	myRequest.write(`{"id": "${req.params.moduleId}"}`);
-	myRequest.end();
-	res.redirect('/');
+	res.redirect('/modules');
 }
 
 function updateModule(req, res) {
