@@ -2,13 +2,8 @@ body {
 	margin: 0 auto;
 	padding: 100px 0 25px 0;
     background-color: #f4f0ea;
-	/*max-width: 50em;*/
-	/*display: flex;*/
-	/*flex-direction: column;*/
-	/*flex-wrap: nowrap;*/
 	line-height: 1.5;
     font-size: 14px;
-	/*color: #333;*/
 }
 span, input {
     margin: 10px;

@@ -28,9 +28,14 @@ html(lang='en')
 									.panel-heading #{module.name}
 									.panel-body
 										p #{module.description}
-										hr
-										p #{module.code}
-										hr
+										h4
+											small Code
+										pre
+											code=module.code
+										h4
+											small Pending Code
+										pre
+											code=module.pendingCode
 										form(action='https://'+server+'/modules/approve/'+module.id, method='post')
 											input.btn.btn-success(type='submit', value='Approve')
 										form(action='https://'+server+'/modules/deny/'+module.id, method='post')
