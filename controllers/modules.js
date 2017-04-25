@@ -164,7 +164,7 @@ function moduleDelete(req, res) {
 
 function updateModule(req, res) {
 	// Get user's modules
-	getModules(req.params.userId)
+	getModules(req.user.id)
 		.then((modules) => {
 			res.render('module/update_module', {
 				modules: modules,
