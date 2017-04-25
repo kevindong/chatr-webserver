@@ -46,76 +46,78 @@ html(lang='en')
 			.col-md-12
 				.panel.panel-primary
 					.panel-heading Modules
-					table.table.table-bordered.table-striped
-						thead
-							tr
-								th id
-								th name
-								th mescription
-								th userID
-								th code
-								th active
-								th createdAt
-								th updatedAt
-								th isBanned
-						tbody
-							each module in modules
+					div(style='overflow:auto')
+						table.table.table-bordered.table-striped
+							thead
 								tr
-									td #{module.id}
-									td #{module.name}
-									td #{module.description}
-									td #{module.userId}
-									td #{module.code}
-									td #{module.active}
-									td #{module.createdAt}
-									td #{module.updatedAt}
-									td
-										.checkbox
-											label
-												if module.isBanned
-													form(action='https://'+server+'/modules/unban/'+module.id, method='post')
-														input.btn.btn-success(type='submit', value='Allow')
-												else
-													form(action='https://'+server+'/modules/ban/'+module.id, method='post')
-														input.btn.btn-danger(type='submit', value='Ban')
+									th id
+									th name
+									th mescription
+									th userID
+									th code
+									th active
+									th createdAt
+									th updatedAt
+									th isBanned
+							tbody
+								each module in modules
+									tr
+										td #{module.id}
+										td #{module.name}
+										td #{module.description}
+										td #{module.userId}
+										td #{module.code}
+										td #{module.active}
+										td #{module.createdAt}
+										td #{module.updatedAt}
+										td
+											.checkbox
+												label
+													if module.isBanned
+														form(action='https://'+server+'/modules/unban/'+module.id, method='post')
+															input.btn.btn-success(type='submit', value='Allow')
+													else
+														form(action='https://'+server+'/modules/ban/'+module.id, method='post')
+															input.btn.btn-danger(type='submit', value='Ban')
 		.spacer
 		.container
 			.col-md-12
 				.panel.panel-primary
 					.panel-heading Users
-					table.table.table-bordered.table-striped
-						thead
-							tr
-								th id
-								th FBSenderId
-								th email
-								th createdAt
-								th updatedAt
-								th isAdmin
-								th isBanned
-								th Delete?
-						tbody
-							each user in users
+					div(style='overflow:auto')
+						table.table.table-bordered.table-striped
+							thead
 								tr
-									td #{user.id}
-									td #{user.FBSenderId}
-									td #{user.email}
-									td #{user.createdAt}
-									td #{user.updatedAt}
-									td
-										if user.isAdmin
-											form(action='https://'+server+'/users/revokeadmin/'+ user.id, method='post')
-												input.btn.btn-danger(type='submit', value='Revoke')
-										else
-											form(action='https://'+server+'/users/makeadmin/'+ user.id, method='post')
-												input.btn.btn-success(type='submit', value='Grant')
-									td
-										if user.isBanned
-											form(action='https://'+server+'/users/unban/'+ user.id, method='post')
-												input.btn.btn-success(type='submit', value='Allow')
-										else
-											form(action='https://'+server+'/users/ban/'+ user.id, method='post')
-												input.btn.btn-danger(type='submit', value='Ban')
-									td
-										a(href='users/' + user.id + '/' + user.email + '/delete' class='btn btn-danger') Delete
+									th id
+									th FBSenderId
+									th email
+									th createdAt
+									th updatedAt
+									th isAdmin
+									th isBanned
+									th Delete?
+							tbody
+								each user in users
+									tr
+										td #{user.id}
+										td #{user.FBSenderId}
+										td #{user.email}
+										td #{user.createdAt}
+										td #{user.updatedAt}
+										td
+											if user.isAdmin
+												form(action='https://'+server+'/users/revokeadmin/'+ user.id, method='post')
+													input.btn.btn-danger(type='submit', value='Revoke')
+											else
+												form(action='https://'+server+'/users/makeadmin/'+ user.id, method='post')
+													input.btn.btn-success(type='submit', value='Grant')
+										td
+											if user.isBanned
+												form(action='https://'+server+'/users/unban/'+ user.id, method='post')
+													input.btn.btn-success(type='submit', value='Allow')
+											else
+												form(action='https://'+server+'/users/ban/'+ user.id, method='post')
+													input.btn.btn-danger(type='submit', value='Ban')
+										td
+											a(href='users/' + user.id + '/' + user.email + '/delete' class='btn btn-danger') Delete
 		.spacer
