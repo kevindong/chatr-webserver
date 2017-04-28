@@ -13,9 +13,11 @@ html(lang='en')
 					.panel-heading Message All Users
 					.panel-body
 						p Send a message to all users.
-						form(action='https://'+server+'/bot/messageall/users', method='post')
-							input(name='message' type='text')
-							input.btn.btn-success(type='submit', value='Send')
+						input(id='inputMessageText' type='text')
+						input.btn.btn-success(
+							type='submit',
+							value='Send'
+							OnClick='buttonClick("POST", "https://'+server+'/bot/messageall/users/", {name: $("#inputMessageText").val(), type: "text"})')
 		.container
 			.col-md-12
 				.panel.panel-primary
@@ -36,10 +38,14 @@ html(lang='en')
 											small Pending Code
 										pre
 											code=module.pendingCode
-										form(action='https://'+server+'/modules/approve/'+module.id, method='post')
-											input.btn.btn-success(type='submit', value='Approve')
-										form(action='https://'+server+'/modules/deny/'+module.id, method='post')
-											input.btn.btn-danger(type='submit', value='Deny')
+										input.btn.btn-success(
+											type='submit',
+											value='Approve'
+											OnClick='buttonClick("POST", "https://'+server+'/modules/approve/'+module.id+'", "")')
+										input.btn.btn-danger(
+											type='submit',
+											value='Deny'
+											OnClick='buttonClick("POST", "https://'+server+'/modules/deny/'+module.id+'", "")')
 										a.btn(href='/modules/' + module.id) View More Details
 		.spacer
 		.container
@@ -71,14 +77,16 @@ html(lang='en')
 										td #{module.createdAt}
 										td #{module.updatedAt}
 										td
-											.checkbox
-												label
-													if module.isBanned
-														form(action='https://'+server+'/modules/unban/'+module.id, method='post')
-															input.btn.btn-success(type='submit', value='Allow')
-													else
-														form(action='https://'+server+'/modules/ban/'+module.id, method='post')
-															input.btn.btn-danger(type='submit', value='Ban')
+											if module.isBanned
+												input.btn.btn-success(
+													type='submit',
+													value='Allow'
+													OnClick='buttonClick("POST", "https://'+server+'/modules/unban/'+module.id+'", "")')
+											else
+												input.btn.btn-danger(
+													type='submit',
+													value='Ban'
+													OnClick='buttonClick("POST", "https://'+server+'/modules/ban/'+module.id+'", "")')
 		.spacer
 		.container
 			.col-md-12
@@ -106,19 +114,29 @@ html(lang='en')
 										td #{user.updatedAt}
 										td
 											if user.isAdmin
-												form(action='https://'+server+'/users/revokeadmin/'+ user.id, method='post')
-													input.btn.btn-danger(type='submit', value='Revoke')
+												input.btn.btn-danger(
+													type='submit',
+													value='Revoke'
+													OnClick='buttonClick("POST", "https://'+server+'/users/revokeadmin/'+user.id+'", "")')
 											else
-												form(action='https://'+server+'/users/makeadmin/'+ user.id, method='post')
-													input.btn.btn-success(type='submit', value='Grant')
+												input.btn.btn-success(
+													type='submit',
+													value='Grant'
+													OnClick='buttonClick("POST", "https://'+server+'/users/makeadmin/'+user.id+'", "")')
 										td
 											if user.isBanned
-												form(action='https://'+server+'/users/unban/'+ user.id, method='post')
-													input.btn.btn-success(type='submit', value='Allow')
+												input.btn.btn-success(
+													type='submit',
+													value='Allow'
+													OnClick='buttonClick("POST", "https://'+server+'/users/unban/'+user.id+'", "")')
 											else
-												form(action='https://'+server+'/users/ban/'+ user.id, method='post')
-													input.btn.btn-danger(type='submit', value='Ban')
+												input.btn.btn-danger(
+													type='submit',
+													value='Ban'
+													OnClick='buttonClick("POST", "https://'+server+'/users/ban/'+user.id+'", "")')
 										td
 											form(action='https://'+server+'/users/'+user.id+'/'+user.email+'/delete', method='post')
 														input.btn.btn-danger(type='submit', value='Delete')
 		.spacer
+		script
+			include ./index.js
