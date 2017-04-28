@@ -135,8 +135,10 @@ html(lang='en')
 													value='Ban'
 													OnClick='buttonClick("POST", "https://'+server+'/users/ban/'+user.id+'", "")')
 										td
-											form(action='https://'+server+'/users/'+user.id+'/'+user.email+'/delete', method='post')
-														input.btn.btn-danger(type='submit', value='Delete')
+											input.btn.btn-danger(
+												type='submit',
+												value='Delete'
+													OnClick='buttonClick("POST", "https://'+server+'/users/delete", {email: "'+user.email+'", type: "text"})')
 		.spacer
 		script
 			include ./index.js
